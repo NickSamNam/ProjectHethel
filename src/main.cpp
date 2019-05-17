@@ -1,8 +1,14 @@
-#include "VehicleClient.h"
-#include "NetworkClient.h"
-#include "LocationProvider.h"
-#include "Notifier.h"
-#include "JsonHandler.h"
+#include "Vehicle/VehicleClient.h"
+#include "Networking/NetworkClient.h"
+#include "Positioning/LocationProvider.h"
+#include "Notifying/Notifier.h"
+#include "Messaging/JsonHandler.h"
+
+using namespace Vehicle;
+using namespace Networking;
+using namespace Positioning;
+using namespace Notifying;
+using namespace Messaging;
 
 VehicleClient vehicle;
 NetworkClient network;
