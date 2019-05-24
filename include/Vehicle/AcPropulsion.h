@@ -2,6 +2,8 @@
 #define ACPROPULSION_H
 
 #include <cstdint>
+#include <Arduino.h>
+#include <FastCRC.h>
 #include "Vms.h"
 #include "VehicleData.h"
 
@@ -11,6 +13,8 @@ class AcPropulsion : Vms
 {
 
 private:
+	HardwareSerial serial;
+	FastCRC16 crc16;
 	int chargingCurrentLimit;
 	int reverseChargingCurrentLimit;
 
@@ -18,10 +22,10 @@ private:
 
 	unsigned char* generateSignature(uint16_t dataLength);
 
-	unsigned char* generateCRC(unsigned char data[]);
-
 public:
-	unsigned char* readData();
+	AcPropulsion(HardwareSerial serial);
+
+	size_t readData(unsigned char *buffer, size_t length);
 
 	VehicleData parseData(unsigned char data[]);
 
