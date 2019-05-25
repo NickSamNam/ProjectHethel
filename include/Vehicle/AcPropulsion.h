@@ -1,6 +1,7 @@
 #ifndef ACPROPULSION_H
 #define ACPROPULSION_H
 
+#include <memory>
 #include <cstdint>
 #include <Arduino.h>
 #include <FastCRC.h>
@@ -13,7 +14,7 @@ class AcPropulsion : Vms
 {
 
 private:
-	HardwareSerial serial;
+	std::unique_ptr<HardwareSerial> serial;
 	FastCRC16 crc16;
 	int chargingCurrentLimit;
 	int reverseChargingCurrentLimit;
@@ -23,7 +24,7 @@ private:
 	unsigned char* generateSignature(uint16_t dataLength);
 
 public:
-	AcPropulsion(HardwareSerial serial);
+	AcPropulsion(std::unique_ptr<HardwareSerial> serial);
 
 	size_t readData(unsigned char *buffer, size_t length);
 

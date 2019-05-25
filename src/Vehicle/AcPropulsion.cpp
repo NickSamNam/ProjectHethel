@@ -1,14 +1,17 @@
 #include <stdexcept>
+#include <limits>
 #include "Vehicle/AcPropulsion.h"
 
 using namespace Vehicle;
 
-AcPropulsion::AcPropulsion(HardwareSerial serial)
+AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial)
+	: serial(std::move(serial))
+	, crc16(FastCRC16())
+	, chargingCurrentLimit(std::numeric_limits<int>::max())
+	, reverseChargingCurrentLimit((std::numeric_limits<int>::max()))
 {
-	this->serial = serial;
 	// 57600 baudrate, 8 data bits, no parity, 1 stop bit
-	serial.begin(57600, SERIAL_8N1);
-	this->crc16 = FastCRC16();
+	this->serial->begin(57600, SERIAL_8N1);
 }
 
 void AcPropulsion::sendCommand(unsigned char key[], unsigned char value[])
@@ -28,7 +31,7 @@ size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 	// Read bytes until signature is found.
 	unsigned char signature[2];
 	do {
-		if (serial.readBytes(signature, 2) != 2)
+		if (serial->readBytes(signature, 2) != 2)
 			return 0;
 	} while (signature[0] & 0b11111100 != 0xAC);
 
@@ -41,13 +44,13 @@ size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 
 	// Read CRC.
 	unsigned char crc_b[2];
-	if (serial.readBytes(crc_b, 2) != 2)
+	if (serial->readBytes(crc_b, 2) != 2)
 		return 0;
 	// CRC bytes to uint16.
 	u_int16_t crc = ((crc_b[0] << 8) | crc_b[1]);
 
 	// Read the remaining data into the buffer.
-	if (serial.readBytes(buffer, length) != length)
+	if (serial->readBytes(buffer, length) != length)
 		return 0;
 
 	// Check the CRC checksum.
