@@ -24,8 +24,7 @@ void setup()
 
 void loop()
 {
-	RgbLed rgbled;
+	RgbLed *rgbled;
 	Notifier notifier(rgbled);
-	notifier.setNetworkError(false);
-	notifier.setVmsError(true);
+	notifier.setNetworkError(true);
 }

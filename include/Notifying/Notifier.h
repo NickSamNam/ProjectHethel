@@ -8,12 +8,12 @@ namespace Notifying
 class Notifier
 {
 private:
-	ColorLight colorLight; //Notifier has a ColorLight.
+	ColorLight *colorLight; //Notifier has a ColorLight.
 	bool vmsErrorState;
 	bool networkErrorState;
 
 public:
-	Notifier(ColorLight colorLight1);
+	Notifier(ColorLight *colorLight);
 
 	void setVmsError(bool state);
 

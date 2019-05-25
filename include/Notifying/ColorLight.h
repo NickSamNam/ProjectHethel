@@ -6,9 +6,9 @@ namespace Notifying
 class ColorLight
 {
 public:
-	void off();
+	void virtual off() = 0;
 
-	void on(int r, int g, int b);
+	void virtual on(int r, int g, int b) = 0;
 };
 }
 
