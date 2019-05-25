@@ -1,6 +1,7 @@
 #ifndef RGBLED_H
 #define RGBLED_H
 
+#include <Arduino.h>
 #include "ColorLight.h"
 
 namespace Notifying
@@ -8,6 +9,8 @@ namespace Notifying
 class RgbLed : ColorLight
 {
 
+private:
+	void setup();
 
 public:
 	void off();

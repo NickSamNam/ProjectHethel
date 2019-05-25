@@ -7,5 +7,9 @@
         "cstddef": "cpp",
         "typeinfo": "cpp",
         "cstdint": "cpp"
+    },
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/tristenkrijgsman/.platformio/penv/bin:/Users/tristenkrijgsman/.platformio/penv:/Users/tristenkrijgsman/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:Library/Android/sdk/platform-tools/",
+        "PLATFORMIO_CALLER": "vscode"
     }
 }
