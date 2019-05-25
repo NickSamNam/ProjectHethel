@@ -2,10 +2,6 @@
 
 using namespace Notifying;
 
-int redPin = 0;
-int greenPin = 10;
-int bluePin = 9;
-
 void RgbLed::setup(){
 	//Putting correct pins to OUTPUT pinmode
 	pinMode(redPin, OUTPUT);

@@ -8,8 +8,10 @@ namespace Notifying
 {
 class RgbLed : ColorLight
 {
-
 private:
+	int redPin = 1;
+	int greenPin= 2;
+	int bluePin= 3;
 	void setup();
 
 public:

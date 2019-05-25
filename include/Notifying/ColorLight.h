@@ -5,8 +5,6 @@ namespace Notifying
 {
 class ColorLight
 {
-
-
 public:
 	void off();
 
