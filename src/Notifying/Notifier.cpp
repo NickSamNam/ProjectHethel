@@ -4,14 +4,22 @@ using namespace Notifying;
 
 void Notifier::setVmsError(bool state)
 {
-	// TODO - implement Notifier::setVmsError
-	throw "Not yet implemented";
+	if(state){
+		colorLight->on(255, 0, 0);
+	} else
+	{
+		colorLight->off;
+	}
 }
 
 void Notifier::setNetworkError(bool state)
 {
-	// TODO - implement Notifier::setNetworkError
-	throw "Not yet implemented";
+	if(state){
+		colorLight->on(0, 0, 255);
+	} else
+	{
+		colorLight->off;
+	}
 }
 
 void Notifier::updateState()
