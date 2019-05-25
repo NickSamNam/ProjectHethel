@@ -5,20 +5,20 @@ using namespace Notifying;
 void Notifier::setVmsError(bool state)
 {
 	if(state){
-		colorLight->on(255, 0, 0);
+		colorLight.on(255, 0, 0);
 	} else
 	{
-		colorLight->off;
+		colorLight.off;
 	}
 }
 
 void Notifier::setNetworkError(bool state)
 {
 	if(state){
-		colorLight->on(0, 0, 255);
+		colorLight.on(0, 0, 255);
 	} else
 	{
-		colorLight->off;
+		colorLight.off;
 	}
 }
 
