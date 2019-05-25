@@ -3,7 +3,6 @@
 #include "Positioning/LocationProvider.h"
 #include "Notifying/Notifier.h"
 #include "Messaging/JsonHandler.h"
-#include "Notifying/RgbLed.h"
 
 using namespace Vehicle;
 using namespace Networking;
@@ -14,17 +13,17 @@ using namespace Messaging;
 VehicleClient vehicle;
 NetworkClient network;
 LocationProvider location;
+Notifier notifier;
 JsonHandler messageHandler;
 
 void setup()
 {
 	// TODO - implement setup
-	//throw "Not yet implemented";
+	throw "Not yet implemented";
 }
 
 void loop()
 {
-	RgbLed *rgbled;
-	Notifier notifier(rgbled);
-	notifier.setNetworkError(true);
+	// TODO - implement setup
+	throw "Not yet implemented";
 }

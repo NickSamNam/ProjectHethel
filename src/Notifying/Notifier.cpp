@@ -25,9 +25,3 @@ void Notifier::setNetworkError(bool state)
 		this->colorLight->off();
 	}
 }
-
-void Notifier::updateState()
-{
-	// TODO - implement Notifier::updateState
-	//throw "Not yet implemented";
-}
