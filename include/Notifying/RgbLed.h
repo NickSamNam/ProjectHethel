@@ -6,7 +6,7 @@
 
 namespace Notifying
 {
-class RgbLed : ColorLight
+class RgbLed : public ColorLight
 {
 private:
 	int redPin = 23;
