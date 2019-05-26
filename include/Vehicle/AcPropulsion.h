@@ -10,7 +10,7 @@
 
 namespace Vehicle
 {
-class AcPropulsion : Vms
+class AcPropulsion : public Vms
 {
 
 private:
