@@ -24,6 +24,6 @@ void setup()
 
 void loop()
 {
-	// TODO - implement setup
+	// TODO - implement loop
 	throw "Not yet implemented";
 }

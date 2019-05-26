@@ -18,6 +18,8 @@ public:
 	void setVmsError(bool state);
 
 	void setNetworkError(bool state);
+
+	void updateState();
 };
 }
 
