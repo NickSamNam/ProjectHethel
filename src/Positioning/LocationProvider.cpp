@@ -4,6 +4,6 @@ using namespace Positioning;
 
 Location LocationProvider::getLocation()
 {
-	// TODO - implement LocationProvider::getLocation
-	throw "Not yet implemented";
+	SamM8Q gps = new SamM8Q();
+	return gps.parseData(gps.readData());
 }

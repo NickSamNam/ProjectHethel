@@ -3,7 +3,8 @@
 
 #include "GPSClient.h"
 #include "Location.h"
-
+#include <HardwareSerial.h>
+#include <TinyGPS.h>
 namespace Positioning
 {
 class SamM8Q : GPSClient
@@ -11,9 +12,9 @@ class SamM8Q : GPSClient
 
 
 public:
-	unsigned char* readData();
+	int readData();
 
-	Location parseData(unsigned char gpsData[]);
+	Location parseData(int gpsData);
 };
 }
 

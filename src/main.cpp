@@ -18,8 +18,8 @@ JsonHandler messageHandler;
 
 void setup()
 {
-	// TODO - implement setup
-	throw "Not yet implemented";
+	location = new LocationProvider();
+	printf(location.getLocation());
 }
 
 void loop()
