@@ -2,8 +2,11 @@
 
 using namespace Notifying;
 
-void RgbLed::setup(){
-	//Putting correct pins to OUTPUT pinmode
+RgbLed::RgbLed(int redPin, int greenPin, int bluePin){
+	this->redPin = redPin;
+	this->greenPin = greenPin;
+	this->bluePin = bluePin;
+
 	pinMode(redPin, OUTPUT);
 	pinMode(greenPin, OUTPUT);
 	pinMode(bluePin, OUTPUT);
@@ -19,7 +22,6 @@ void RgbLed::off()
 
 void RgbLed::on(int r, int g, int b)
 {
-	setup();
 	//r, g and b can have a value ranging between 0 and 255. 255 being max brightness for that particular color.
   	analogWrite(redPin, r);
   	analogWrite(greenPin, g);

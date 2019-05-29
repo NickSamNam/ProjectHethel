@@ -9,12 +9,13 @@ namespace Notifying
 class RgbLed : public ColorLight
 {
 private:
-	int redPin = 23;
-	int greenPin= 22;
-	int bluePin= 21;
-	void setup();
+	int redPin;
+	int greenPin;
+	int bluePin;
 
 public:
+	RgbLed(int redPin, int greenPin, int bluePin);
+	
 	void off();
 
 	void on(int r, int g, int b);
