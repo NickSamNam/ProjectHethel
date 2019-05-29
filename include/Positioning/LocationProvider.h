@@ -2,6 +2,7 @@
 #define LOCATIONPROVIDER_H
 
 #include "Location.h"
+#include "SamM8Q.h"
 
 namespace Positioning
 {
