@@ -16,9 +16,11 @@ private:
 public:
 	Notifier(std::unique_ptr<ColorLight> colorLight);
 
-	void setVmsError(bool state);
+	void setVmsError();
 
-	void setNetworkError(bool state);
+	void setNetworkError();
+
+	void off();
 };
 }
 

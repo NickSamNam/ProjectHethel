@@ -4,22 +4,16 @@ using namespace Notifying;
 
 Notifier::Notifier(std::unique_ptr<ColorLight> colorLight) : colorLight(std::move(colorLight)) {}
 
-void Notifier::setVmsError(bool state)
+void Notifier::setVmsError()
 {
-	if(state){
-		this->colorLight->on(255, 165, 0);
-	} else
-	{
-		this->colorLight->off();
-	}
+	this->colorLight->on(255, 165, 0);
 }
 
-void Notifier::setNetworkError(bool state)
+void Notifier::setNetworkError()
 {
-	if(state){
-		this->colorLight->on(255, 0, 0);
-	} else
-	{
-		this->colorLight->off();
-	}
+	this->colorLight->on(255, 0, 0);
+}
+
+void Notifier::off(){
+	this->colorLight->off();
 }
