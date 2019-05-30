@@ -12,7 +12,7 @@ class Vms
 public:
 	virtual ~Vms();
 
-	virtual unsigned char* readData() = 0;
+	virtual size_t readData(unsigned char *buffer, size_t length) = 0;
 
 	virtual VehicleData parseData(unsigned char data[]) = 0;
 
