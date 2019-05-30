@@ -1,3 +1,4 @@
+#include <memory>
 #include "Vehicle/VehicleClient.h"
 #include "Networking/NetworkClient.h"
 #include "Positioning/LocationProvider.h"
@@ -10,11 +11,11 @@ using namespace Positioning;
 using namespace Notifying;
 using namespace Messaging;
 
-VehicleClient vehicle;
-NetworkClient network;
-LocationProvider location;
-Notifier notifier;
-JsonHandler messageHandler;
+std::shared_ptr<VehicleClient> vehicle;
+std::shared_ptr<NetworkClient> network;
+std::shared_ptr<LocationProvider> location;
+std::shared_ptr<Notifier> notifier;
+std::shared_ptr<JsonHandler> messageHandler;
 
 void setup()
 {

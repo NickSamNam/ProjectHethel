@@ -33,7 +33,7 @@ size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 	do {
 		if (serial->readBytes(signature, 2) != 2)
 			return 0;
-	} while (signature[0] & 0b11111100 != 0xAC);
+	} while ((signature[0] & 0b11111100) != 0xAC);
 
 	// Get datalength from signature and subtract crc length.
 	size_t length = (((signature[0] & 0b11) << 8) | signature[1]) - 2;
