@@ -1,11 +1,10 @@
-#include "Messaging/ChargeVehicle.h"
+#include "Messaging/Commands/ChargeVehicle.h"
 
 using namespace Messaging;
 
-ChargeVehicle::ChargeVehicle(VehicleClient vehicle) : ChargeVehicle(vehicle)
+ChargeVehicle::	ChargeVehicle(std::shared_ptr<Vehicle::VehicleClient> vehicle)
 {
-	// TODO - implement ChargeVehicle::ChargeVehicle
-	throw "Not yet implemented";
+	this->vehicle = vehicle;
 }
 
 void ChargeVehicle::execute()

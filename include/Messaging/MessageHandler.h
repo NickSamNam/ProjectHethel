@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "Command.h"
+#include "Commands/Command.h"
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
 
@@ -20,7 +20,7 @@ public:
 
 	virtual Command parseMessage(std::string message) = 0;
 
-	void addCommand(std::string name, Command command);
+	virtual void addCommand(std::string name, Command command);
 };
 }
 

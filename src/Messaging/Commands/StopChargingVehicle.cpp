@@ -1,4 +1,4 @@
-#include "Messaging/StopChargingVehicle.h"
+#include "Messaging/Commands/StopChargingVehicle.h"
 
 using namespace Messaging;
 
