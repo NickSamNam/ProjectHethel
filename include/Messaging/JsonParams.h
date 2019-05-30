@@ -8,7 +8,7 @@ namespace Messaging
 class JsonParams
 {
 public:
-	virtual void parseParams(std::string params);
+	virtual void parseParams(std::string params) = 0;
 };
 }
 
