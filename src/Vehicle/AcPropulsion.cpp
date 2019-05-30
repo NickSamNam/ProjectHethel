@@ -1,6 +1,18 @@
+#include <stdexcept>
+#include <limits>
 #include "Vehicle/AcPropulsion.h"
 
 using namespace Vehicle;
+
+AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial)
+	: serial(std::move(serial))
+	, crc16(FastCRC16())
+	, chargingCurrentLimit(std::numeric_limits<int>::max())
+	, reverseChargingCurrentLimit((std::numeric_limits<int>::max()))
+{
+	// 57600 baudrate, 8 data bits, no parity, 1 stop bit
+	this->serial->begin(57600, SERIAL_8N1);
+}
 
 void AcPropulsion::sendCommand(unsigned char key[], unsigned char value[])
 {
@@ -8,22 +20,45 @@ void AcPropulsion::sendCommand(unsigned char key[], unsigned char value[])
 	throw "Not yet implemented";
 }
 
-unsigned char* AcPropulsion::generateSignature(uint16_t dataLength)
+unsigned char *AcPropulsion::generateSignature(uint16_t dataLength)
 {
 	// TODO - implement AcPropulsion::generateSignature
 	throw "Not yet implemented";
 }
 
-unsigned char* AcPropulsion::generateCRC(unsigned char data[])
+size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 {
-	// TODO - implement AcPropulsion::generateCRC
-	throw "Not yet implemented";
-}
+	// Read bytes until signature is found.
+	unsigned char signature[2];
+	do {
+		if (serial->readBytes(signature, 2) != 2)
+			return 0;
+	} while (signature[0] & 0b11111100 != 0xAC);
 
-unsigned char* AcPropulsion::readData()
-{
-	// TODO - implement AcPropulsion::readData
-	throw "Not yet implemented";
+	// Get datalength from signature and subtract crc length.
+	size_t length = (((signature[0] & 0b11) << 8) | signature[1]) - 2;
+
+	// Throw exception if buffer size is too small.
+	if (bufferSize < length)
+		throw std::runtime_error("Buffer too small");
+
+	// Read CRC.
+	unsigned char crc_b[2];
+	if (serial->readBytes(crc_b, 2) != 2)
+		return 0;
+	// CRC bytes to uint16.
+	u_int16_t crc = ((crc_b[0] << 8) | crc_b[1]);
+
+	// Read the remaining data into the buffer.
+	if (serial->readBytes(buffer, length) != length)
+		return 0;
+
+	// Check the CRC checksum.
+	if (crc16.ccitt(buffer, length) != crc)
+		return 0;
+
+	// Return the length of the data which was written to the buffer.
+	return length;
 }
 
 VehicleData AcPropulsion::parseData(unsigned char data[])

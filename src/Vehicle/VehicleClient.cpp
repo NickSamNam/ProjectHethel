@@ -2,6 +2,8 @@
 
 using namespace Vehicle;
 
+VehicleClient::VehicleClient(std::unique_ptr<Vms> vms) : vms(std::move(vms)) {}
+
 VehicleData VehicleClient::getData()
 {
 	// TODO - implement VehicleClient::getData

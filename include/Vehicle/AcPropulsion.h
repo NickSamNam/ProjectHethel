@@ -1,16 +1,21 @@
 #ifndef ACPROPULSION_H
 #define ACPROPULSION_H
 
+#include <memory>
 #include <cstdint>
+#include <Arduino.h>
+#include <FastCRC.h>
 #include "Vms.h"
 #include "VehicleData.h"
 
 namespace Vehicle
 {
-class AcPropulsion : Vms
+class AcPropulsion : public Vms
 {
 
 private:
+	std::unique_ptr<HardwareSerial> serial;
+	FastCRC16 crc16;
 	int chargingCurrentLimit;
 	int reverseChargingCurrentLimit;
 
@@ -18,10 +23,10 @@ private:
 
 	unsigned char* generateSignature(uint16_t dataLength);
 
-	unsigned char* generateCRC(unsigned char data[]);
-
 public:
-	unsigned char* readData();
+	AcPropulsion(std::unique_ptr<HardwareSerial> serial);
+
+	size_t readData(unsigned char *buffer, size_t length);
 
 	VehicleData parseData(unsigned char data[]);
 
