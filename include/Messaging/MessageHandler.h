@@ -20,7 +20,7 @@ public:
 
 	virtual Command parseMessage(std::string message) = 0;
 
-	virtual void addCommand(std::string name, Command command);
+	void addCommand(std::string name, Command command);
 };
 }
 
