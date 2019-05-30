@@ -2,10 +2,9 @@
 
 using namespace Messaging;
 
-StopChargingVehicle::StopChargingVehicle(VehicleClient vehicle) : VehicleCommand(vehicle)
+StopChargingVehicle::StopChargingVehicle(std::shared_ptr<Vehicle::VehicleClient> vehicle)
 {
-	// TODO - implement StopChargingVehicle::StopChargingVehicle
-	throw "Not yet implemented";
+	this->vehicle = vehicle;
 }
 
 void StopChargingVehicle::execute()
