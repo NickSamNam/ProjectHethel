@@ -26,9 +26,9 @@ private:
 public:
 	AcPropulsion(std::unique_ptr<HardwareSerial> serial);
 
-    AcPropulsion(const AcPropulsion &) = delete;
+	AcPropulsion(const AcPropulsion &) = delete;
 
-    AcPropulsion &operator=(const AcPropulsion &) = delete;
+	AcPropulsion &operator=(const AcPropulsion &) = delete;
 
 	size_t readData(unsigned char *buffer, size_t length);
 

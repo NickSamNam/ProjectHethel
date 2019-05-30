@@ -16,9 +16,9 @@ private:
 public:
 	VehicleClient(std::unique_ptr<Vms> vms);
 
-    VehicleClient(const VehicleClient &) = delete;
+	VehicleClient(const VehicleClient &) = delete;
 
-    VehicleClient &operator=(const VehicleClient &) = delete;
+	VehicleClient &operator=(const VehicleClient &) = delete;
 
 	VehicleData getData();
 

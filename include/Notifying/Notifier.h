@@ -14,9 +14,9 @@ private:
 public:
 	Notifier(std::unique_ptr<ColorLight> colorLight);
 
-    Notifier(const Notifier &) = delete;
+	Notifier(const Notifier &) = delete;
 
-    Notifier &operator=(const Notifier &) = delete;
+	Notifier &operator=(const Notifier &) = delete;
 
 	void setVmsError();
 
