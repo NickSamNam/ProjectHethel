@@ -10,11 +10,13 @@ class Notifier
 {
 private:
 	std::unique_ptr<ColorLight> colorLight; //Notifier has a ColorLight.
-	bool vmsErrorState;
-	bool networkErrorState;
 
 public:
 	Notifier(std::unique_ptr<ColorLight> colorLight);
+
+	Notifier(const Notifier &) = delete;
+
+	Notifier &operator=(const Notifier &) = delete;
 
 	void setVmsError();
 
