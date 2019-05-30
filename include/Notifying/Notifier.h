@@ -1,25 +1,26 @@
 #ifndef NOTIFIER_H
 #define NOTIFIER_H
 
+#include <memory>
+#include "Notifying/ColorLight.h"
+
 namespace Notifying
 {
 class Notifier
 {
-
 private:
+	std::unique_ptr<ColorLight> colorLight; //Notifier has a ColorLight.
 	bool vmsErrorState;
 	bool networkErrorState;
 
 public:
-	void setVmsError(bool state);
+	Notifier(std::unique_ptr<ColorLight> colorLight);
 
-	void setNetworkError(bool state);
+	void setVmsError();
 
-private:
-	/**
-	 * Is called after each setter, executes the needed RGB config.
-	 */
-	void updateState();
+	void setNetworkError();
+
+	void off();
 };
 }
 
