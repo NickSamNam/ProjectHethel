@@ -12,9 +12,7 @@ class Vms
 public:
 	virtual ~Vms();
 
-	virtual size_t readData(unsigned char *buffer, size_t length) = 0;
-
-	virtual VehicleData parseData(unsigned char data[]) = 0;
+	virtual int getData(VehicleData *data) = 0;
 
 	virtual bool startCharging(int current) = 0;
 

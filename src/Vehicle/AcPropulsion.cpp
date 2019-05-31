@@ -138,68 +138,68 @@ int AcPropulsion::readFrame(l3_header_t header, l3frame_t *frame)
 	return 0;
 }
 
-size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
+int AcPropulsion::getData(VehicleData *data)
 {
-	// Read bytes until signature is found.
-	unsigned char signature[2];
-	do {
-		if (serial->readBytes(signature, 2) != 2)
-			return 0;
-	} while ((signature[0] & 0b11111100) != 0xAC);
-
-	// Get datalength from signature and subtract crc length.
-	size_t length = (((signature[0] & 0b11) << 8) | signature[1]) - 2;
-
-	// Throw exception if buffer size is too small.
-	if (bufferSize < length)
-		throw std::runtime_error("Buffer too small");
-
-	// Read CRC.
-	unsigned char crc_b[2];
-	if (serial->readBytes(crc_b, 2) != 2)
-		return 0;
-	// CRC bytes to uint16.
-	u_int16_t crc = ((crc_b[0] << 8) | crc_b[1]);
-
-	// Read the remaining data into the buffer.
-	if (serial->readBytes(buffer, length) != length)
-		return 0;
-
-	// Check the CRC checksum.
-	if (crc16.ccitt(buffer, length) != crc)
-		return 0;
-
-	// Return the length of the data which was written to the buffer.
-	return length;
-}
-
-VehicleData AcPropulsion::parseData(unsigned char data[])
-{
-	VehicleData result;
-	size_t length = sizeof(data);
-	if (length < 4)
-		return result;
-	uint8_t payloadID = data[0];
-	// Timestamp in hundredths of a second, multiplied by ten to represent milliseconds.
-	result.timestamp = ((data[1] << 16) | (data[2] << 8) | data[3]) * 10;
-	switch (payloadID)
+	l3_header_t header;
+	l3frame_t frame;
+	while ((accumFlag & accumMask) != accumMask)
 	{
-	case L3PAYLOAD_ID_BMS_SUMMARY:
-		break;
-	case L3FRAME_ID_SYS_HIRATE:
-		break;
-	case L3FRAME_ID_SYS_LOWRATE:
-		break;
-	case L3PAYLOAD_ID_BMS_VOLTAGE:
-		break;
-	case L3PAYLOAD_ID_BMS_TEMPERATURE:
-		break;
-	case L3PAYLOAD_ID_TRIPLOG:
-		break;
-	default:
-		break;
+		if (readHeader(&header))
+			return 1;
+		if (readFrame(header, &frame))
+			return 2;
+
+		switch (header.id_and_timestamp.payload_id)
+		{
+		case L3PAYLOAD_ID_BMS_SUMMARY:
+			dataAccum.v_min = frame.bmsSummary.v_min / 1000;
+			dataAccum.v_max = frame.bmsSummary.v_max / 1000;
+			dataAccum.v_avg = frame.bmsSummary.v_avg / 1000;
+			dataAccum.t_min = frame.bmsSummary.t_min / 10;
+			dataAccum.t_max = frame.bmsSummary.t_max / 10;
+			dataAccum.t_avg = frame.bmsSummary.t_avg / 10;
+			dataAccum.soc = frame.bmsSummary.soc_percent;
+			accumFlag |= (1 << L3PAYLOAD_ID_BMS_SUMMARY);
+			break;
+		case L3FRAME_ID_SYS_HIRATE:
+			dataAccum.v_setpoint = frame.sysHighRate.v_bat_x10 / 1000; // probably not
+			dataAccum.i_batt = frame.sysHighRate.i_sys_x10 / 10; // probably
+			dataAccum.i_motor = frame.sysHighRate.i_hyb_x10 / 10; // probably
+			dataAccum.i_acc = frame.sysHighRate.i_aux_x10 / 10; // probably
+			dataAccum.motor = frame.sysHighRate.motor_rpm;
+			accumFlag |= (1 << L3FRAME_ID_SYS_HIRATE);
+			break;
+		case L3FRAME_ID_SYS_LOWRATE:
+			dataAccum.t_motor = frame.sysLowRate.motor_temp_x10 / 10;
+			dataAccum.t_peu = frame.sysLowRate.motor_temp_x10 / 10;
+			dataAccum.i_line1 = frame.sysLowRate.i_line_x10 / 10; // probably
+			dataAccum.i_line2 = 0; // probably
+			dataAccum.i_line3 = 0; // probably
+			dataAccum.v_line1 = frame.sysLowRate.v_line_x10 / 10; // probably
+			dataAccum.v_line2 = 0; // probably
+			dataAccum.v_line3 = 0; // probably
+			dataAccum.p_line = frame.sysLowRate.i_line_x10 * frame.sysLowRate.v_line_x10 / 100; // probably
+			dataAccum.v_aps = frame.sysLowRate.v_aps_x100 / 100;
+			dataAccum.i_setpoint = frame.sysLowRate.line_ampacity; // probably
+			dataAccum.error = frame.sysLowRate.bms_error[1]; // maybe
+			accumFlag |= (1 << L3FRAME_ID_SYS_LOWRATE);
+			break;
+		case L3PAYLOAD_ID_BMS_VOLTAGE:
+			break;
+		case L3PAYLOAD_ID_BMS_TEMPERATURE:
+			break;
+		case L3PAYLOAD_ID_TRIPLOG:
+			accumFlag |= (1 << L3PAYLOAD_ID_TRIPLOG);
+			break;
+		default:
+			break;
+		}
 	}
-	return result;
+
+	dataAccum.timestamp = header.id_and_timestamp.payload_timestamp;
+	accumFlag = 0;
+	*data = dataAccum;
+	return 0;
 }
 
 bool AcPropulsion::startCharging(int current)

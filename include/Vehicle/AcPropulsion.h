@@ -19,6 +19,9 @@ private:
 	FastCRC16 crc16;
 	int chargingCurrentLimit;
 	int reverseChargingCurrentLimit;
+	VehicleData dataAccum;
+	int accumFlag;
+	const int accumMask = ((1 << L3PAYLOAD_ID_BMS_SUMMARY) | (1 << L3FRAME_ID_SYS_HIRATE) | (1 << L3FRAME_ID_SYS_LOWRATE) | (1 << L3PAYLOAD_ID_TRIPLOG));
 
 	void sendCommand(unsigned char key[], unsigned char value[]);
 
@@ -43,9 +46,7 @@ public:
 
 	int readFrame(l3_header_t header, l3frame_t *frame);
 
-	size_t readData(unsigned char *buffer, size_t length);
-
-	VehicleData parseData(unsigned char data[]);
+	int getData(VehicleData *data);
 
 	bool startCharging(int current);
 
