@@ -1,14 +1,21 @@
-#include "VehicleClient.h"
-#include "NetworkClient.h"
-#include "LocationProvider.h"
-#include "Notifier.h"
-#include "JsonHandler.h"
+#include <memory>
+#include "Vehicle/VehicleClient.h"
+#include "Networking/NetworkClient.h"
+#include "Positioning/LocationProvider.h"
+#include "Notifying/Notifier.h"
+#include "Messaging/JsonHandler.h"
 
-VehicleClient vehicle;
-NetworkClient network;
-LocationProvider location;
-Notifier notifier;
-JsonHandler messageHandler;
+using namespace Vehicle;
+using namespace Networking;
+using namespace Positioning;
+using namespace Notifying;
+using namespace Messaging;
+
+std::shared_ptr<VehicleClient> vehicle;
+std::shared_ptr<NetworkClient> network;
+std::shared_ptr<LocationProvider> location;
+std::shared_ptr<Notifier> notifier;
+std::shared_ptr<JsonHandler> messageHandler;
 
 void setup()
 {
