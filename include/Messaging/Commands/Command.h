@@ -8,7 +8,7 @@ class Command
 public:
 	virtual ~Command();
 
-	virtual void execute() = 0;
+	virtual void execute() = 0; //Wordt aangeroepen in de main en voert het commando uit.
 };
 }
 
