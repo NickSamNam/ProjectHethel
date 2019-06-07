@@ -14,9 +14,9 @@ class MessageHandler
 {
 protected:
 	std::map<std::string, Command> commands;
-public:
-	void addCommand(std::string name, Command &command);
 
+	void addCommand(std::string name, Command &command);
+public:
 	virtual std::string generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData) = 0;
 
 	virtual std::shared_ptr<Command> parseMessage(std::string message) = 0;
