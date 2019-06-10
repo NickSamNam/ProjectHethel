@@ -229,12 +229,12 @@ bool AcPropulsion::stopCharging()
 	// TODO - implement AcPropulsion::stopCharging
 }
 
-void AcPropulsion::imposeChargingCurrentLimit(uint8_t current)
+void AcPropulsion::imposeChargingCurrentLimit(int current)
 {
 	// TODO - implement AcPropulsion::imposeChargingCurrentLimit
 }
 
-void AcPropulsion::imposeReverseChargingCurrentLimit(uint8_t current)
+void AcPropulsion::imposeReverseChargingCurrentLimit(int current)
 {
 	// TODO - implement AcPropulsion::imposeReverseChargingCurrentLimit
 }

@@ -57,9 +57,9 @@ public:
 
 	bool stopCharging();
 
-	void imposeChargingCurrentLimit(uint8_t current);
+	void imposeChargingCurrentLimit(int current);
 
-	void imposeReverseChargingCurrentLimit(uint8_t current);
+	void imposeReverseChargingCurrentLimit(int current);
 };
 }
 
