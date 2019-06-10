@@ -10,7 +10,7 @@ class Vms
 
 
 public:
-	virtual ~Vms();
+	virtual ~Vms(){};
 
 	virtual int getData(VehicleData *data) = 0;
 
