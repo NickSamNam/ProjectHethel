@@ -20,11 +20,9 @@ std::shared_ptr<JsonHandler> messageHandler;
 void setup()
 {
 	// TODO - implement setup
-	throw "Not yet implemented";
 }
 
 void loop()
 {
 	// TODO - implement loop
-	throw "Not yet implemented";
 }
