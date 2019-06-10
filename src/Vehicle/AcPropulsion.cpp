@@ -36,7 +36,7 @@ size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 	// Get datalength from signature and subtract crc length.
 	size_t length = (((signature[0] & 0b11) << 8) | signature[1]) - 2;
 
-	// throw exception if buffer size is too small.
+	// Throw exception if buffer size is too small.
 	if (bufferSize < length)
 		return 0;
 
