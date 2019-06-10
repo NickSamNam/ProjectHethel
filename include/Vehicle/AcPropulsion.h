@@ -17,17 +17,12 @@ class AcPropulsion : public Vms
 private:
 	std::unique_ptr<HardwareSerial> serial;
 	FastCRC16 crc16;
-	int chargingCurrentLimit;
-	int reverseChargingCurrentLimit;
+	uint8_t chargingCurrentLimit;
+	uint8_t reverseChargingCurrentLimit;
 	VehicleData dataAccum;
-	int accumFlag;
-	const int accumMask = ((1 << L3PAYLOAD_ID_BMS_SUMMARY) | (1 << L3FRAME_ID_SYS_HIRATE) | (1 << L3FRAME_ID_SYS_LOWRATE) | (1 << L3PAYLOAD_ID_TRIPLOG));
+	uint8_t accumFlag;
+	const uint8_t accumMask;
 
-	void sendCommand(unsigned char key[], unsigned char value[]);
-
-	unsigned char* generateSignature(uint16_t dataLength);
-
-public:
 	typedef union
 	{
 		l3frame_bms_summary_t bmsSummary;
@@ -36,15 +31,23 @@ public:
 		l3frame_triplog_t tripLog;
 	} l3frame_t;
 
+	int readHeader(l3_header_t *header);
+
+	int readFrame(l3_header_t header, l3frame_t *frame);
+
+	void sendCommand(unsigned char key[], unsigned char value[]);
+
+	unsigned char* generateSignature(uint16_t dataLength);
+
+public:
+
 	AcPropulsion(std::unique_ptr<HardwareSerial> serial);
+
+	AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent);
 
 	AcPropulsion(const AcPropulsion &) = delete;
 
 	AcPropulsion &operator=(const AcPropulsion &) = delete;
-
-	int readHeader(l3_header_t *header);
-
-	int readFrame(l3_header_t header, l3frame_t *frame);
 
 	int getData(VehicleData *data);
 
@@ -54,9 +57,9 @@ public:
 
 	bool stopCharging();
 
-	void imposeChargingCurrentLimit(int current);
+	void imposeChargingCurrentLimit(uint8_t current);
 
-	void imposeReverseChargingCurrentLimit(int current);
+	void imposeReverseChargingCurrentLimit(uint8_t current);
 };
 }
 

@@ -3,11 +3,16 @@
 
 using namespace Vehicle;
 
-AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial)
+AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial) : AcPropulsion(std::move(serial), std::numeric_limits<uint8_t>::max(), std::numeric_limits<uint8_t>::max()) {}
+
+AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent) 
 	: serial(std::move(serial))
 	, crc16(FastCRC16())
-	, chargingCurrentLimit(std::numeric_limits<int>::max())
-	, reverseChargingCurrentLimit((std::numeric_limits<int>::max()))
+	, chargingCurrentLimit(maxChargingCurrent)
+	, reverseChargingCurrentLimit(maxReverseChargingCurrent)
+	, dataAccum()
+	, accumFlag(0)
+	, accumMask((1 << L3PAYLOAD_ID_BMS_SUMMARY) | (1 << L3FRAME_ID_SYS_HIRATE) | (1 << L3FRAME_ID_SYS_LOWRATE) | (1 << L3PAYLOAD_ID_TRIPLOG))
 {
 	// 57600 baudrate, 8 data bits, no parity, 1 stop bit
 	this->serial->begin(57600, SERIAL_8N1);
@@ -140,14 +145,22 @@ int AcPropulsion::readFrame(l3_header_t header, l3frame_t *frame)
 
 int AcPropulsion::getData(VehicleData *data)
 {
+	int returnCode = -1;
 	l3_header_t header;
 	l3frame_t frame;
 	while ((accumFlag & accumMask) != accumMask)
 	{
 		if (readHeader(&header))
-			return 1;
+		{
+			returnCode = 1;
+			break;
+		}
+		dataAccum.timestamp = header.id_and_timestamp.payload_timestamp;
 		if (readFrame(header, &frame))
-			return 2;
+		{
+			returnCode = 2;
+			break;
+		}
 
 		switch (header.id_and_timestamp.payload_id)
 		{
@@ -194,12 +207,13 @@ int AcPropulsion::getData(VehicleData *data)
 		default:
 			break;
 		}
+		returnCode = 0;
 	}
 
-	dataAccum.timestamp = header.id_and_timestamp.payload_timestamp;
-	accumFlag = 0;
 	*data = dataAccum;
-	return 0;
+	dataAccum = VehicleData();
+	accumFlag = 0;
+	return returnCode;
 }
 
 bool AcPropulsion::startCharging(int current)
@@ -220,13 +234,13 @@ bool AcPropulsion::stopCharging()
 	throw "Not yet implemented";
 }
 
-void AcPropulsion::imposeChargingCurrentLimit(int current)
+void AcPropulsion::imposeChargingCurrentLimit(uint8_t current)
 {
 	// TODO - implement AcPropulsion::imposeChargingCurrentLimit
 	throw "Not yet implemented";
 }
 
-void AcPropulsion::imposeReverseChargingCurrentLimit(int current)
+void AcPropulsion::imposeReverseChargingCurrentLimit(uint8_t current)
 {
 	// TODO - implement AcPropulsion::imposeReverseChargingCurrentLimit
 	throw "Not yet implemented";

@@ -6,8 +6,9 @@ VehicleClient::VehicleClient(std::unique_ptr<Vms> vms) : vms(std::move(vms)) {}
 
 VehicleData VehicleClient::getData()
 {
-	// TODO - implement VehicleClient::getData
-	throw "Not yet implemented";
+	VehicleData data;
+	vms->getData(&data);
+	return data;
 }
 
 void VehicleClient::startCharging(int current)
