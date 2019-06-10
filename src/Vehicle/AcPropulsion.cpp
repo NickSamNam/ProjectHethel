@@ -17,13 +17,11 @@ AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial)
 void AcPropulsion::sendCommand(unsigned char key[], unsigned char value[])
 {
 	// TODO - implement AcPropulsion::sendCommand
-	throw "Not yet implemented";
 }
 
 unsigned char *AcPropulsion::generateSignature(uint16_t dataLength)
 {
 	// TODO - implement AcPropulsion::generateSignature
-	throw "Not yet implemented";
 }
 
 size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
@@ -40,7 +38,7 @@ size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 
 	// throw exception if buffer size is too small.
 	if (bufferSize < length)
-		throw std::runtime_error("Buffer too small");
+		return 0;
 
 	// Read CRC.
 	unsigned char crc_b[2];
@@ -64,35 +62,29 @@ size_t AcPropulsion::readData(unsigned char *buffer, size_t bufferSize)
 VehicleData AcPropulsion::parseData(unsigned char data[])
 {
 	// TODO - implement AcPropulsion::parseData
-	throw "Not yet implemented";
 }
 
 bool AcPropulsion::startCharging(int current)
 {
 	// TODO - implement AcPropulsion::startCharging
-	throw "Not yet implemented";
 }
 
 bool AcPropulsion::startReverseCharging(int current)
 {
 	// TODO - implement AcPropulsion::startReverseCharging
-	throw "Not yet implemented";
 }
 
 bool AcPropulsion::stopCharging()
 {
 	// TODO - implement AcPropulsion::stopCharging
-	throw "Not yet implemented";
 }
 
 void AcPropulsion::imposeChargingCurrentLimit(int current)
 {
 	// TODO - implement AcPropulsion::imposeChargingCurrentLimit
-	throw "Not yet implemented";
 }
 
 void AcPropulsion::imposeReverseChargingCurrentLimit(int current)
 {
 	// TODO - implement AcPropulsion::imposeReverseChargingCurrentLimit
-	throw "Not yet implemented";
 }
