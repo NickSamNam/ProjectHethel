@@ -3,7 +3,7 @@
 
 using namespace Messaging;
 
-void MessageHandler::addCommand(std::string name, Command &command)
+void MessageHandler::addCommand(std::string name, std::shared_ptr<Command> command)
 {
 	this->commands.insert({name, command});
 }

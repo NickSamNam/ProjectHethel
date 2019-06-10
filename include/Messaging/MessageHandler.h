@@ -13,10 +13,10 @@ namespace Messaging
 class MessageHandler
 {
 protected:
-	std::map<std::string, Command> commands;
+	std::map<std::string, std::shared_ptr<Command>> commands;
 
 public:
-	void addCommand(std::string name, Command &command);
+	void addCommand(std::string name, std::shared_ptr<Command> command);
 
 	virtual std::string generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData) = 0;
 
