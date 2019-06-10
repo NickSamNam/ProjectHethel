@@ -36,5 +36,4 @@ void setup()
 void loop()
 {
 	// TODO - implement loop
-	throw "Not yet implemented";
 }

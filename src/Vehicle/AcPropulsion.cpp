@@ -21,13 +21,11 @@ AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxCh
 void AcPropulsion::sendCommand(unsigned char key[], unsigned char value[])
 {
 	// TODO - implement AcPropulsion::sendCommand
-	throw "Not yet implemented";
 }
 
 unsigned char *AcPropulsion::generateSignature(uint16_t dataLength)
 {
 	// TODO - implement AcPropulsion::generateSignature
-	throw "Not yet implemented";
 }
 
 int AcPropulsion::readHeader(l3_header_t *header)
@@ -219,29 +217,24 @@ int AcPropulsion::getData(VehicleData *data)
 bool AcPropulsion::startCharging(int current)
 {
 	// TODO - implement AcPropulsion::startCharging
-	throw "Not yet implemented";
 }
 
 bool AcPropulsion::startReverseCharging(int current)
 {
 	// TODO - implement AcPropulsion::startReverseCharging
-	throw "Not yet implemented";
 }
 
 bool AcPropulsion::stopCharging()
 {
 	// TODO - implement AcPropulsion::stopCharging
-	throw "Not yet implemented";
 }
 
 void AcPropulsion::imposeChargingCurrentLimit(uint8_t current)
 {
 	// TODO - implement AcPropulsion::imposeChargingCurrentLimit
-	throw "Not yet implemented";
 }
 
 void AcPropulsion::imposeReverseChargingCurrentLimit(uint8_t current)
 {
 	// TODO - implement AcPropulsion::imposeReverseChargingCurrentLimit
-	throw "Not yet implemented";
 }
