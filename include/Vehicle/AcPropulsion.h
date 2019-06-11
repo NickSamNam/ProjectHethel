@@ -22,6 +22,7 @@ private:
 	VehicleData dataAccum;
 	uint8_t accumFlag;
 	const uint8_t accumMask;
+	const int maxTries;
 
 	typedef union
 	{

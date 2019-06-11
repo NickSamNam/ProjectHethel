@@ -37,6 +37,9 @@ bool VehicleData::isValid(_Tp value)
 {
     return value != std::numeric_limits<_Tp>::max();
 }
+template bool VehicleData::isValid<uint32_t>(uint32_t);
+template bool VehicleData::isValid<uint16_t>(uint16_t);
+template bool VehicleData::isValid<uint8_t>(uint8_t);
 
 bool VehicleData::isValid(float value)
 {

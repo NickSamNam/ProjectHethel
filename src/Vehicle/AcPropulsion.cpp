@@ -13,6 +13,7 @@ AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxCh
 	, dataAccum()
 	, accumFlag(0)
 	, accumMask((1 << L3PAYLOAD_ID_BMS_SUMMARY) | (1 << L3FRAME_ID_SYS_HIRATE) | (1 << L3FRAME_ID_SYS_LOWRATE) | (1 << L3PAYLOAD_ID_TRIPLOG))
+	, maxTries(5)
 {
 	// 57600 baudrate, 8 data bits, no parity, 1 stop bit
 	this->serial->begin(57600, SERIAL_8N1);
@@ -30,10 +31,11 @@ unsigned char *AcPropulsion::generateSignature(uint16_t dataLength)
 
 int AcPropulsion::readHeader(l3_header_t *header)
 {
+	int nTries = 0;
 	// Read bytes until signature is found.
 	unsigned char signature[2];
 	do {
-		if (serial->readBytes(signature, 2) != 2)
+		if (nTries++ >= maxTries || serial->readBytes(signature, 2) != 2)
 			return 1;
 		header->signature.u16 = (signature[0] << 8) | signature[1];
 	} while (header->signature.bits.signature != L3_SIGNATURE_VALUE);
