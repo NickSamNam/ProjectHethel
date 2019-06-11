@@ -6,7 +6,7 @@ namespace Notifying
 class ColorLight
 {
 public:
-	virtual ~ColorLight();
+	virtual ~ColorLight(){};
 
 	virtual void off() = 0;
 
