@@ -9,7 +9,7 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	// TODO - implement JsonHandler::generateMessage
 }
 
-Command JsonHandler::parseMessage(std::string message)
+std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
 {
 	// TODO - implement JsonHandler::parseMessage
 }
