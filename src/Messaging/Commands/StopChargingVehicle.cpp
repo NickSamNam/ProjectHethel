@@ -10,5 +10,4 @@ StopChargingVehicle::StopChargingVehicle(std::shared_ptr<Vehicle::VehicleClient>
 void StopChargingVehicle::execute()
 {
 	// TODO - implement StopChargingVehicle::execute
-	throw "Not yet implemented";
 }
