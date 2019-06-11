@@ -1,10 +1,10 @@
-#include "Messaging/ReverseChargeVehicle.h"
+#include "Messaging/Commands/ReverseChargeVehicle.h"
 
 using namespace Messaging;
 
-ReverseChargeVehicle::ReverseChargeVehicle(VehicleClient vehicle) : VehicleCommand(vehicle)
+ReverseChargeVehicle::ReverseChargeVehicle(std::shared_ptr<Vehicle::VehicleClient> vehicle)
 {
-	// TODO - implement ReverseChargeVehicle::ReverseChargeVehicle
+	this->vehicle = vehicle;
 }
 
 void ReverseChargeVehicle::execute()
