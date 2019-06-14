@@ -15,7 +15,7 @@ class AcPropulsion : public Vms
 {
 
 private:
-	std::unique_ptr<HardwareSerial> serial;
+	HardwareSerial *serial;
 	FastCRC16 crc16;
 	uint8_t chargingCurrentLimit;
 	uint8_t reverseChargingCurrentLimit;
@@ -42,9 +42,9 @@ private:
 
 public:
 
-	AcPropulsion(std::unique_ptr<HardwareSerial> serial);
+	AcPropulsion(HardwareSerial *serial);
 
-	AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent);
+	AcPropulsion(HardwareSerial *serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent);
 
 	AcPropulsion(const AcPropulsion &) = delete;
 

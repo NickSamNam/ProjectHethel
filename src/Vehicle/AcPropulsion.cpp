@@ -3,10 +3,10 @@
 
 using namespace Vehicle;
 
-AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial) : AcPropulsion(std::move(serial), std::numeric_limits<uint8_t>::max(), std::numeric_limits<uint8_t>::max()) {}
+AcPropulsion::AcPropulsion(HardwareSerial *serial) : AcPropulsion(serial, std::numeric_limits<uint8_t>::max(), std::numeric_limits<uint8_t>::max()) {}
 
-AcPropulsion::AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent) 
-	: serial(std::move(serial))
+AcPropulsion::AcPropulsion(HardwareSerial *serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent) 
+	: serial(serial)
 	, crc16(FastCRC16())
 	, chargingCurrentLimit(maxChargingCurrent)
 	, reverseChargingCurrentLimit(maxReverseChargingCurrent)
