@@ -13,7 +13,7 @@ using namespace Positioning;
 using namespace Notifying;
 using namespace Messaging;
 
-#define VEHICLE_SERIAL Serial3
+#define VEHICLE_SERIAL &Serial3
 #define MAX_CHARGING_CURRENT 6
 #define MAX_REVERSE_CHARGING_CURRENT 6
 
@@ -28,8 +28,7 @@ void setup()
 	// TODO - implement setup
 	vehicle = std::make_shared<VehicleClient>(
 		std::move(std::make_unique<AcPropulsion>(
-			std::move(std::make_unique<HardwareSerial>(
-				VEHICLE_SERIAL)),
+			VEHICLE_SERIAL,
 			MAX_CHARGING_CURRENT, MAX_REVERSE_CHARGING_CURRENT)));
 }
 
