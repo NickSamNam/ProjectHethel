@@ -19,6 +19,8 @@ AcPropulsion::AcPropulsion(HardwareSerial *serial, uint8_t maxChargingCurrent, u
 	, crc16(FastCRC16())
 	, chargingCurrentLimit(maxChargingCurrent)
 	, reverseChargingCurrentLimit(maxReverseChargingCurrent)
+	, dataAccum()
+	, accumFlag(0)
 	, maxTries(60)
 {
 	// 57600 baudrate, 8 data bits, no parity, 1 stop bit
@@ -37,8 +39,8 @@ unsigned char *AcPropulsion::generateSignature(uint16_t dataLength)
 
 int AcPropulsion::readHeader(l3_header_t *header)
 {
-	// if (serial->available() < HEADER_SIZE)
-	// 	return -1;
+	if (serial->available() < HEADER_SIZE)
+		return -1;
 	int nTries = 0;
 	// Read bytes until signature is found.
 	unsigned char signature[2];
@@ -181,62 +183,62 @@ int AcPropulsion::readFrame(l3_header_t header, l3frame_t *frame)
 
 int AcPropulsion::getData(VehicleData *data)
 {
-	uint8_t accumFlag = 0;
-	while ((accumFlag & ACCUM_MASK) != ACCUM_MASK)
+	l3_header_t header;
+	l3frame_t frame;
+	if (readHeader(&header))
+		return 1;
+	if (readFrame(header, &frame))
+		return 2;
+	dataAccum.timestamp = header.id_and_timestamp.payload_timestamp;
+	switch (header.id_and_timestamp.payload_id)
 	{
-		l3_header_t header;
-		l3frame_t frame;
-		if (readHeader(&header))
-			return 1;
-		if (readFrame(header, &frame))
-			return 2;
-		data->timestamp = header.id_and_timestamp.payload_timestamp;
-		switch (header.id_and_timestamp.payload_id)
-		{
-		case L3PAYLOAD_ID_BMS_SUMMARY:
-			data->v_min = frame.bmsSummary.v_min / 1000;
-			data->v_max = frame.bmsSummary.v_max / 1000;
-			data->v_avg = frame.bmsSummary.v_avg / 1000;
-			data->t_min = frame.bmsSummary.t_min / 10;
-			data->t_max = frame.bmsSummary.t_max / 10;
-			data->t_avg = frame.bmsSummary.t_avg / 10;
-			data->soc = frame.bmsSummary.soc_percent;
-			accumFlag |= (1 << L3PAYLOAD_ID_BMS_SUMMARY);
-			break;
-		case L3FRAME_ID_SYS_HIRATE:
-			data->v_setpoint = frame.sysHighRate.v_bat_x10 / 1000; // probably not
-			data->i_batt = frame.sysHighRate.i_sys_x10 / 10;	   // probably
-			data->i_motor = frame.sysHighRate.i_hyb_x10 / 10;	  // probably
-			data->i_acc = frame.sysHighRate.i_aux_x10 / 10;		   // probably
-			data->motor = frame.sysHighRate.motor_rpm;
-			accumFlag |= (1 << L3FRAME_ID_SYS_HIRATE);
-			break;
-		case L3FRAME_ID_SYS_LOWRATE:
-			data->t_motor = frame.sysLowRate.motor_temp_x10 / 10;
-			data->t_peu = frame.sysLowRate.motor_temp_x10 / 10;
-			data->i_line1 = frame.sysLowRate.i_line_x10 / 10;								// probably
-			data->i_line2 = 0;																// probably
-			data->i_line3 = 0;																// probably
-			data->v_line1 = frame.sysLowRate.v_line_x10 / 10;								// probably
-			data->v_line2 = 0;																// probably
-			data->v_line3 = 0;																// probably
-			data->p_line = frame.sysLowRate.i_line_x10 * frame.sysLowRate.v_line_x10 / 100; // probably
-			data->v_aps = frame.sysLowRate.v_aps_x100 / 100;
-			data->i_setpoint = frame.sysLowRate.line_ampacity; // probably
-			data->error = frame.sysLowRate.bms_error[1];	   // maybe
-			accumFlag |= (1 << L3FRAME_ID_SYS_LOWRATE);
-			break;
-		case L3PAYLOAD_ID_BMS_VOLTAGE:
-			break;
-		case L3PAYLOAD_ID_BMS_TEMPERATURE:
-			break;
-		case L3PAYLOAD_ID_TRIPLOG:
-			break;
-		default:
-			break;
-		}
-		// delay(100);
+	case L3PAYLOAD_ID_BMS_SUMMARY:
+		dataAccum.v_min = frame.bmsSummary.v_min / 1000;
+		dataAccum.v_max = frame.bmsSummary.v_max / 1000;
+		dataAccum.v_avg = frame.bmsSummary.v_avg / 1000;
+		dataAccum.t_min = frame.bmsSummary.t_min / 10;
+		dataAccum.t_max = frame.bmsSummary.t_max / 10;
+		dataAccum.t_avg = frame.bmsSummary.t_avg / 10;
+		dataAccum.soc = frame.bmsSummary.soc_percent;
+		accumFlag |= (1 << L3PAYLOAD_ID_BMS_SUMMARY);
+		break;
+	case L3FRAME_ID_SYS_HIRATE:
+		dataAccum.v_setpoint = frame.sysHighRate.v_bat_x10 / 1000; // probably not
+		dataAccum.i_batt = frame.sysHighRate.i_sys_x10 / 10;	   // probably
+		dataAccum.i_motor = frame.sysHighRate.i_hyb_x10 / 10;	  // probably
+		dataAccum.i_acc = frame.sysHighRate.i_aux_x10 / 10;		   // probably
+		dataAccum.motor = frame.sysHighRate.motor_rpm;
+		accumFlag |= (1 << L3FRAME_ID_SYS_HIRATE);
+		break;
+	case L3FRAME_ID_SYS_LOWRATE:
+		dataAccum.t_motor = frame.sysLowRate.motor_temp_x10 / 10;
+		dataAccum.t_peu = frame.sysLowRate.motor_temp_x10 / 10;
+		dataAccum.i_line1 = frame.sysLowRate.i_line_x10 / 10;								// probably
+		dataAccum.i_line2 = 0;																// probably
+		dataAccum.i_line3 = 0;																// probably
+		dataAccum.v_line1 = frame.sysLowRate.v_line_x10 / 10;								// probably
+		dataAccum.v_line2 = 0;																// probably
+		dataAccum.v_line3 = 0;																// probably
+		dataAccum.p_line = frame.sysLowRate.i_line_x10 * frame.sysLowRate.v_line_x10 / 100; // probably
+		dataAccum.v_aps = frame.sysLowRate.v_aps_x100 / 100;
+		dataAccum.i_setpoint = frame.sysLowRate.line_ampacity; // probably
+		dataAccum.error = frame.sysLowRate.bms_error[1];	   // maybe
+		accumFlag |= (1 << L3FRAME_ID_SYS_LOWRATE);
+		break;
+	case L3PAYLOAD_ID_BMS_VOLTAGE:
+		break;
+	case L3PAYLOAD_ID_BMS_TEMPERATURE:
+		break;
+	case L3PAYLOAD_ID_TRIPLOG:
+		break;
+	default:
+		break;
 	}
+	if ((accumFlag & ACCUM_MASK) != ACCUM_MASK)
+		return 3;
+	*data = dataAccum;
+	dataAccum = VehicleData();
+	accumFlag = 0;
 	return 0;
 }
 
