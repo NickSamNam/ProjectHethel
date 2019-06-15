@@ -1,16 +1,34 @@
 #include <limits>
+#include <IntervalTimer.h>
 #include "Vehicle/AcPropulsion.h"
 
 using namespace Vehicle;
 
 #define SIGNATURE_SIZE 2
 #define HEADER_SIZE 8
+#define COMMAND_HEADER_SIZE 5
 #define PAYLOAD_TIMESTAMP_AND_ID_SIZE 4
 #define FRAME_BMS_SUMMARY_SIZE 13
 #define FRAME_SYS_HIRATE_SIZE 20
 #define FRAME_SYS_LOWRATE_SIZE 18
 #define FRAME_TRIPLOG_SIZE 52
 #define ACCUM_MASK ((1 << L3PAYLOAD_ID_BMS_SUMMARY) | (1 << L3FRAME_ID_SYS_HIRATE) | (1 << L3FRAME_ID_SYS_LOWRATE))
+#define COMMAND_ID_START_CHARGING 0x0A
+#define COMMAND_ID_STOP_CHARGING 0x0B
+#define COMMAND_ID_SET_CHARGING_CURRENT 0x0C
+#define COMMAND_ID_REVERSE_CHARGING 0x09
+#define REVERSE_CHARGING_COMMAND_SIZE 6
+#define REVERSE_CHARGING_INTERVAL 1000
+
+
+IntervalTimer reverseChargingTimer;
+unsigned char reverseChargingCommand[REVERSE_CHARGING_COMMAND_SIZE];
+HardwareSerial *commandSerial;
+
+void sendReverseChargingCommand()
+{
+	commandSerial->write(reverseChargingCommand, 6);
+}
 
 AcPropulsion::AcPropulsion(HardwareSerial *serial) : AcPropulsion(serial, std::numeric_limits<uint8_t>::max(), std::numeric_limits<uint8_t>::max()) {}
 
@@ -24,17 +42,34 @@ AcPropulsion::AcPropulsion(HardwareSerial *serial, uint8_t maxChargingCurrent, u
 	, maxTries(60)
 {
 	// 57600 baudrate, 8 data bits, no parity, 1 stop bit
+	::commandSerial = serial;
 	this->serial->begin(57600, SERIAL_8N1);
+	reverseChargingCommand[0] = L3_SIGNATURE_VALUE >> 8;
+	reverseChargingCommand[1] = REVERSE_CHARGING_COMMAND_SIZE - SIGNATURE_SIZE;
+	reverseChargingCommand[4] = COMMAND_ID_REVERSE_CHARGING;
 }
 
-void AcPropulsion::sendCommand(unsigned char key[], unsigned char value[])
+void AcPropulsion::setReverseChargingCommand(unsigned int current)
 {
-	// TODO - implement AcPropulsion::sendCommand
+	reverseChargingCommand[5] = 0 - (int8_t) (current < reverseChargingCurrentLimit ? current : reverseChargingCurrentLimit);
+	uint16_t crc = crc16.ccitt(&reverseChargingCommand[4], 2);
+	reverseChargingCommand[2] = crc >> 8;
+	reverseChargingCommand[3] = crc & 0xFF;
 }
 
-unsigned char *AcPropulsion::generateSignature(uint16_t dataLength)
+int AcPropulsion::sendCommand(uint8_t id, unsigned char* arguments, size_t length)
 {
-	// TODO - implement AcPropulsion::generateSignature
+	unsigned char buffer[length + COMMAND_HEADER_SIZE];
+	uint16_t signature = ((length + COMMAND_HEADER_SIZE - SIGNATURE_SIZE) & L3_LENGTH_MASK) | L3_SIGNATURE_VALUE;
+	buffer[0] = signature >> 8;
+	buffer[1] = signature & 0xFF;
+	buffer[4] = id;
+	memcpy(&buffer[5], arguments, length);
+	uint16_t crc = crc16.ccitt(&buffer[4], length + 1);
+	buffer[2] = crc >> 8;
+	buffer[3] = crc & 0xFF;
+	size_t written = serial->write(buffer, length + COMMAND_HEADER_SIZE);
+	return written - (length + COMMAND_HEADER_SIZE);
 }
 
 int AcPropulsion::readHeader(l3_header_t *header)
@@ -242,27 +277,35 @@ int AcPropulsion::getData(VehicleData *data)
 	return 0;
 }
 
-bool AcPropulsion::startCharging(int current)
+bool AcPropulsion::startCharging(unsigned int current)
 {
-	// TODO - implement AcPropulsion::startCharging
+	int errors = 0;
+	unsigned char params[1];
+	params[0] = current < chargingCurrentLimit ? current : chargingCurrentLimit;
+	errors += sendCommand(COMMAND_ID_SET_CHARGING_CURRENT, params, 1);
+	errors += sendCommand(COMMAND_ID_START_CHARGING);
+	return errors == 0;
 }
 
-bool AcPropulsion::startReverseCharging(int current)
+bool AcPropulsion::startReverseCharging(unsigned int current)
 {
-	// TODO - implement AcPropulsion::startReverseCharging
+	reverseChargingTimer.end();
+	setReverseChargingCommand(current);
+	return reverseChargingTimer.begin(::sendReverseChargingCommand, REVERSE_CHARGING_INTERVAL * 1000);
 }
 
 bool AcPropulsion::stopCharging()
 {
-	// TODO - implement AcPropulsion::stopCharging
+	reverseChargingTimer.end();
+	return sendCommand(COMMAND_ID_STOP_CHARGING) == 0;
 }
 
-void AcPropulsion::imposeChargingCurrentLimit(int current)
+void AcPropulsion::imposeChargingCurrentLimit(unsigned int current)
 {
-	// TODO - implement AcPropulsion::imposeChargingCurrentLimit
+	chargingCurrentLimit = current;
 }
 
-void AcPropulsion::imposeReverseChargingCurrentLimit(int current)
+void AcPropulsion::imposeReverseChargingCurrentLimit(unsigned int current)
 {
-	// TODO - implement AcPropulsion::imposeReverseChargingCurrentLimit
+	reverseChargingCurrentLimit = current;
 }

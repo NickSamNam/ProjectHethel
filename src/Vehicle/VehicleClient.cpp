@@ -11,17 +11,17 @@ VehicleData VehicleClient::getData()
 	return data;
 }
 
-void VehicleClient::startCharging(int current)
+void VehicleClient::startCharging(unsigned int current)
 {
-	// TODO - implement VehicleClient::startCharging
+	vms->startCharging(current);
 }
 
-void VehicleClient::startReverseCharging(int current)
+void VehicleClient::startReverseCharging(unsigned int current)
 {
-	// TODO - implement VehicleClient::startReverseCharging
+	vms->startReverseCharging(current);
 }
 
 void VehicleClient::stopCharging()
 {
-	// TODO - implement VehicleClient::stopCharging
+	vms->stopCharging();
 }

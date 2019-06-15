@@ -35,9 +35,9 @@ private:
 
 	int readFrame(l3_header_t header, l3frame_t *frame);
 
-	void sendCommand(unsigned char key[], unsigned char value[]);
+	int sendCommand(uint8_t id, unsigned char* arguments = nullptr, size_t length = 0);
 
-	unsigned char* generateSignature(uint16_t dataLength);
+	void setReverseChargingCommand(unsigned int current);
 
 public:
 
@@ -51,15 +51,15 @@ public:
 
 	int getData(VehicleData *data);
 
-	bool startCharging(int current);
+	bool startCharging(unsigned int current);
 
-	bool startReverseCharging(int current);
+	bool startReverseCharging(unsigned int current);
 
 	bool stopCharging();
 
-	void imposeChargingCurrentLimit(int current);
+	void imposeChargingCurrentLimit(unsigned int current);
 
-	void imposeReverseChargingCurrentLimit(int current);
+	void imposeReverseChargingCurrentLimit(unsigned int current);
 };
 }
 
