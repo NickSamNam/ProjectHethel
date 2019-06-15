@@ -19,9 +19,6 @@ private:
 	FastCRC16 crc16;
 	uint8_t chargingCurrentLimit;
 	uint8_t reverseChargingCurrentLimit;
-	VehicleData dataAccum;
-	uint8_t accumFlag;
-	const uint8_t accumMask;
 	const int maxTries;
 
 	typedef union
