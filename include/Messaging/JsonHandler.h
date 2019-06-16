@@ -6,6 +6,11 @@
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
 #include "Messaging/Commands/Command.h"
+#include "Messaging/Commands/ChargeVehicle.h"
+#include "Messaging/Commands/ReverseChargeVehicle.h"
+#include "Messaging/Commands/StopChargingVehicle.h"
+#include <ArduinoJson.h>
+#include <string>
 #include <memory>
 
 namespace Messaging

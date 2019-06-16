@@ -2,13 +2,13 @@
 #define REVERSECHARGEVEHICLE_H
 
 #include <string>
-#include "../JsonParams.h"
+#include <sstream>
 #include "Command.h"
 #include "Vehicle/VehicleClient.h"
 
 namespace Messaging
 {
-class ReverseChargeVehicle : Command, JsonParams
+class ReverseChargeVehicle : Command
 {
 private:	
 	std::shared_ptr<Vehicle::VehicleClient> vehicle;

@@ -9,10 +9,13 @@ ChargeVehicle::	ChargeVehicle(std::shared_ptr<Vehicle::VehicleClient> vehicle)
 
 void ChargeVehicle::execute()
 {
-	// TODO - implement ChargeVehicle::execute
+	vehicle->startCharging(this->current);
 }
 
 void ChargeVehicle::parseParams(std::string params)
 {
-	// TODO - implement ChargeVehicle::parseParams
+	unsigned int current;
+	std::istringstream iss (params);
+	iss >> current;
+	this->current = current;
 }
