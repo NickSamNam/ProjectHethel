@@ -20,7 +20,6 @@ using namespace Vehicle;
 #define REVERSE_CHARGING_COMMAND_SIZE 6
 #define REVERSE_CHARGING_INTERVAL 1000
 
-
 IntervalTimer reverseChargingTimer;
 unsigned char reverseChargingCommand[REVERSE_CHARGING_COMMAND_SIZE];
 HardwareSerial *commandSerial;
