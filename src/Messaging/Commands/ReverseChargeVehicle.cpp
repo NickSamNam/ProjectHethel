@@ -14,7 +14,7 @@ void ReverseChargeVehicle::execute()
 
 void ReverseChargeVehicle::parseParams(std::string params)
 {
-	unsigned int current;
+	float current;
 	std::istringstream iss (params);
 	iss >> current;
 	this->current = current;

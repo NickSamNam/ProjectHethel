@@ -184,13 +184,15 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 enum command_types {
     charge_vehicle,
     reverse_charge_vehicle,
-	stop_charging_vehicle
+	stop_charging_vehicle,
+	error
 };
 
 command_types hashit (std::string const& inString) {
     if (inString == "charge_vehicle") return charge_vehicle;
     if (inString == "reverse_charge_vehicle") return reverse_charge_vehicle;
 	if (inString == "stop_charging_vehicle") return stop_charging_vehicle;
+	return error;
 }
 
 std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
@@ -221,8 +223,8 @@ std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
 		case stop_charging_vehicle:
 			output = this->commands.find("stop_charging_vehicle")->second;
 			return output;
+		case error:
+			return 0;	
 		}
 	return 0;
 }
-
-

@@ -14,7 +14,7 @@ void ChargeVehicle::execute()
 
 void ChargeVehicle::parseParams(std::string params)
 {
-	unsigned int current;
+	float current;
 	std::istringstream iss (params);
 	iss >> current;
 	this->current = current;
