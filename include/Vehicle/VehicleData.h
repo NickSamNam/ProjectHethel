@@ -34,6 +34,13 @@ public:
 	float v_setpoint;
 	uint8_t i_setpoint;
 	uint8_t error;
+
+	VehicleData();
+
+	template <class _Tp>
+	static bool isValid(_Tp value);
+
+	static bool isValid(float value);
 };
 }
 
