@@ -107,17 +107,17 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	data_error["value"] = vehicleData.error;
 	data_error["unit"] = "error_codes";
 
-	// JsonObject data_longitude = data.createNestedObject("longitude");
-	// data_longitude["value"] = locationData.longitude;
-	// data_longitude["unit"] = "DDDMM.MMMM";
+	JsonObject data_longitude = data.createNestedObject("longitude");
+	data_longitude["value"] = locationData.longitude;
+	data_longitude["unit"] = "DDDMM.MMMM";
 
-	// JsonObject data_latitude = data.createNestedObject("latitude");
-	// data_latitude["value"] = locationData.latitude;
-	// data_latitude["unit"] = "DDDMM.MMMM";
+	JsonObject data_latitude = data.createNestedObject("latitude");
+	data_latitude["value"] = locationData.latitude;
+	data_latitude["unit"] = "DDDMM.MMMM";
 
-	// JsonObject data_altitude = data.createNestedObject("altitude");
-	// data_altitude["value"] = locationData.altitude;
-	// data_altitude["unit"] = "DDDMM.MMMM";
+	JsonObject data_altitude = data.createNestedObject("altitude");
+	data_altitude["value"] = locationData.altitude;
+	data_altitude["unit"] = "DDDMM.MMMM";
 
 	JsonArray sensors = doc.createNestedArray("sensors");
 	JsonObject sensors_0 = sensors.createNestedObject();
