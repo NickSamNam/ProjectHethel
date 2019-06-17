@@ -15,13 +15,12 @@ class AcPropulsion : public Vms
 {
 
 private:
-	std::unique_ptr<HardwareSerial> serial;
+	HardwareSerial *serial;
 	FastCRC16 crc16;
 	uint8_t chargingCurrentLimit;
 	uint8_t reverseChargingCurrentLimit;
 	VehicleData dataAccum;
 	uint8_t accumFlag;
-	const uint8_t accumMask;
 	const int maxTries;
 
 	typedef union
@@ -36,15 +35,15 @@ private:
 
 	int readFrame(l3_header_t header, l3frame_t *frame);
 
-	void sendCommand(unsigned char key[], unsigned char value[]);
+	int sendCommand(uint8_t id, unsigned char* arguments = nullptr, size_t length = 0);
 
-	unsigned char* generateSignature(uint16_t dataLength);
+	void setReverseChargingCommand(unsigned int current);
 
 public:
 
-	AcPropulsion(std::unique_ptr<HardwareSerial> serial);
+	AcPropulsion(HardwareSerial *serial);
 
-	AcPropulsion(std::unique_ptr<HardwareSerial> serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent);
+	AcPropulsion(HardwareSerial *serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent);
 
 	AcPropulsion(const AcPropulsion &) = delete;
 
@@ -52,15 +51,15 @@ public:
 
 	int getData(VehicleData *data);
 
-	bool startCharging(int current);
+	bool startCharging(unsigned int current);
 
-	bool startReverseCharging(int current);
+	bool startReverseCharging(unsigned int current);
 
 	bool stopCharging();
 
-	void imposeChargingCurrentLimit(int current);
+	void imposeChargingCurrentLimit(unsigned int current);
 
-	void imposeReverseChargingCurrentLimit(int current);
+	void imposeReverseChargingCurrentLimit(unsigned int current);
 };
 }
 
