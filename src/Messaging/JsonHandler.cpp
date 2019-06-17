@@ -7,11 +7,11 @@ using namespace Messaging;
 std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
 {
 	// TODO - implement JsonHandler::generateMessage
-	//throw "Not yet implemented";
+	throw "Not yet implemented";
 }
 
 Command JsonHandler::parseMessage(std::string message)
 {
 	// TODO - implement JsonHandler::parseMessage
-	//throw "Not yet implemented";
+	throw "Not yet implemented";
 }
