@@ -22,9 +22,9 @@ public:
 
 	VehicleData getData();
 
-	void startCharging(int current);
+	void startCharging(unsigned int current);
 
-	void startReverseCharging(int current);
+	void startReverseCharging(unsigned int current);
 
 	void stopCharging();
 };
