@@ -11,7 +11,10 @@ class LocationProvider
 
 
 public:
+	SamM8Q* gps;
+	LocationProvider();
 	Location getLocation();
+	bool isValid(Location loc);
 };
 }
 
