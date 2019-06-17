@@ -2,26 +2,26 @@
 
 using namespace Vehicle;
 
+VehicleClient::VehicleClient(std::unique_ptr<Vms> vms) : vms(std::move(vms)) {}
+
 VehicleData VehicleClient::getData()
 {
-	// TODO - implement VehicleClient::getData
-	throw "Not yet implemented";
+	VehicleData data;
+	vms->getData(&data);
+	return data;
 }
 
-void VehicleClient::startCharging(int current)
+void VehicleClient::startCharging(unsigned int current)
 {
-	// TODO - implement VehicleClient::startCharging
-	throw "Not yet implemented";
+	vms->startCharging(current);
 }
 
-void VehicleClient::startReverseCharging(int current)
+void VehicleClient::startReverseCharging(unsigned int current)
 {
-	// TODO - implement VehicleClient::startReverseCharging
-	throw "Not yet implemented";
+	vms->startReverseCharging(current);
 }
 
 void VehicleClient::stopCharging()
 {
-	// TODO - implement VehicleClient::stopCharging
-	throw "Not yet implemented";
+	vms->stopCharging();
 }

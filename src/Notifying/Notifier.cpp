@@ -2,20 +2,18 @@
 
 using namespace Notifying;
 
-void Notifier::setVmsError(bool state)
+Notifier::Notifier(std::unique_ptr<ColorLight> colorLight) : colorLight(std::move(colorLight)) {}
+
+void Notifier::setVmsError()
 {
-	// TODO - implement Notifier::setVmsError
-	throw "Not yet implemented";
+	this->colorLight->on(255, 165, 0);
 }
 
-void Notifier::setNetworkError(bool state)
+void Notifier::setNetworkError()
 {
-	// TODO - implement Notifier::setNetworkError
-	throw "Not yet implemented";
+	this->colorLight->on(255, 0, 0);
 }
 
-void Notifier::updateState()
-{
-	// TODO - implement Notifier::updateState
-	throw "Not yet implemented";
+void Notifier::off(){
+	this->colorLight->off();
 }

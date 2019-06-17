@@ -10,19 +10,19 @@ class Vms
 
 
 public:
-	unsigned char* readData();
+	virtual ~Vms(){};
 
-	VehicleData parseData(unsigned char data[]);
+	virtual int getData(VehicleData *data) = 0;
 
-	bool startCharging(int current);
+	virtual bool startCharging(unsigned int current) = 0;
 
-	bool startReverseCharging(int current);
+	virtual bool startReverseCharging(unsigned int current) = 0;
 
-	bool stopCharging();
+	virtual bool stopCharging() = 0;
 
-	void imposeChargingCurrentLimit(int current);
+	virtual void imposeChargingCurrentLimit(unsigned int current) = 0;
 
-	void imposeReverseChargingCurrentLimit(int current);
+	virtual void imposeReverseChargingCurrentLimit(unsigned int current) = 0;
 };
 }
 

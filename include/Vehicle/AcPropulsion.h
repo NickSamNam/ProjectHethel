@@ -1,39 +1,65 @@
 #ifndef ACPROPULSION_H
 #define ACPROPULSION_H
 
+#include <memory>
 #include <cstdint>
+#include <Arduino.h>
+#include <FastCRC.h>
 #include "Vms.h"
 #include "VehicleData.h"
+#include "logger3_public.h"
 
 namespace Vehicle
 {
-class AcPropulsion : Vms
+class AcPropulsion : public Vms
 {
 
 private:
-	int chargingCurrentLimit;
-	int reverseChargingCurrentLimit;
+	HardwareSerial *serial;
+	FastCRC16 crc16;
+	uint8_t chargingCurrentLimit;
+	uint8_t reverseChargingCurrentLimit;
+	VehicleData dataAccum;
+	uint8_t accumFlag;
+	const int maxTries;
 
-	void sendCommand(unsigned char key[], unsigned char value[]);
+	typedef union
+	{
+		l3frame_bms_summary_t bmsSummary;
+		l3frame_sys_highrate_t sysHighRate;
+		l3frame_sys_lowrate_t sysLowRate;
+		l3frame_triplog_t tripLog;
+	} l3frame_t;
 
-	unsigned char* generateSignature(uint16_t dataLength);
+	int readHeader(l3_header_t *header);
 
-	unsigned char* generateCRC(unsigned char data[]);
+	int readFrame(l3_header_t header, l3frame_t *frame);
+
+	int sendCommand(uint8_t id, unsigned char* arguments = nullptr, size_t length = 0);
+
+	void setReverseChargingCommand(unsigned int current);
 
 public:
-	unsigned char* readData();
 
-	VehicleData parseData(unsigned char data[]);
+	AcPropulsion(HardwareSerial *serial);
 
-	bool startCharging(int current);
+	AcPropulsion(HardwareSerial *serial, uint8_t maxChargingCurrent, uint8_t maxReverseChargingCurrent);
 
-	bool startReverseCharging(int current);
+	AcPropulsion(const AcPropulsion &) = delete;
+
+	AcPropulsion &operator=(const AcPropulsion &) = delete;
+
+	int getData(VehicleData *data);
+
+	bool startCharging(unsigned int current);
+
+	bool startReverseCharging(unsigned int current);
 
 	bool stopCharging();
 
-	void imposeChargingCurrentLimit(int current);
+	void imposeChargingCurrentLimit(unsigned int current);
 
-	void imposeReverseChargingCurrentLimit(int current);
+	void imposeReverseChargingCurrentLimit(unsigned int current);
 };
 }
 

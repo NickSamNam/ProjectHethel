@@ -5,10 +5,10 @@ namespace Messaging
 {
 class Command
 {
-
-
 public:
-	void execute();
+	virtual ~Command(){};
+
+	virtual void execute() = 0;
 };
 }
 

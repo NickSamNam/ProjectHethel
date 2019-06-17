@@ -1,9 +1,9 @@
 #include "Messaging/MessageHandler.h"
+#include "Messaging/Commands/Command.h"
 
 using namespace Messaging;
 
-void MessageHandler::addCommand(std::string name, Command command)
+void MessageHandler::addCommand(std::string name, std::shared_ptr<Command> command)
 {
-	// TODO - implement MessageHandler::addCommand
-	throw "Not yet implemented";
+	this->commands.insert({name, command});
 }
