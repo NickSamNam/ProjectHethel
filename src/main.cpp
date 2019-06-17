@@ -12,18 +12,24 @@ using namespace Messaging;
 
 VehicleClient vehicle;
 NetworkClient network;
-LocationProvider location;
+LocationProvider *location;
 Notifier notifier;
 JsonHandler messageHandler;
 
 void setup()
 {
+	Serial.begin(9600);
+	Serial1.clear();
+	Serial1.setTX(1);
+	Serial1.setRX(0);
+	Serial1.begin(9600);
 	location = new LocationProvider();
-	printf(location.getLocation());
+	
 }
 
 void loop()
 {
-	// TODO - implement loop
-	throw "Not yet implemented";
+	Serial.println("long:");
+	Serial.println(location->getLocation().longitude);
+	delay(1000);
 }

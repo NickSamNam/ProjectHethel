@@ -4,7 +4,9 @@
 #include "GPSClient.h"
 #include "Location.h"
 #include <HardwareSerial.h>
-#include <TinyGPS.h>
+#include <NMEAGPS.h>
+#include <GPSport.h>
+
 namespace Positioning
 {
 class SamM8Q : GPSClient
@@ -12,9 +14,9 @@ class SamM8Q : GPSClient
 
 
 public:
-	int readData();
-
-	Location parseData(int gpsData);
+	Location readData();
+	String getValue(String data, char separator, int index);
+	Location parseData();
 };
 }
 
