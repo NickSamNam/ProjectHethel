@@ -2,6 +2,9 @@
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
 
+#define VERSION_API "1.0"
+#define IDENTIFIER "lotus-001"
+
 using namespace Messaging;
 
 std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
@@ -9,115 +12,115 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	const size_t capacity = JSON_ARRAY_SIZE(24) + 24*JSON_OBJECT_SIZE(1) + 26*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(26);
 	DynamicJsonDocument doc(capacity);
 
-	doc["version-api"] = "1.0";
+	doc["version-api"] = VERSION_API;
 	doc["timestamp"] = "YYYY-MM-DDTHH:MM:SS+HH:MM";
-	doc["identifier"] = "lotus-001";
+	doc["identifier"] = IDENTIFIER;
 
 	JsonObject data = doc.createNestedObject("data");
 
 	JsonObject data_v_min = data.createNestedObject("v_min");
 	data_v_min["value"] = vehicleData.v_min;
-	data_v_min["unit"] = "V";
+	data_v_min["unit"] = vehicleData.units.volt;
 
 	JsonObject data_v_max = data.createNestedObject("v_max");
 	data_v_max["value"] = vehicleData.v_max;
-	data_v_max["unit"] = "V";
+	data_v_max["unit"] = vehicleData.units.volt;
 
 	JsonObject data_v_avg = data.createNestedObject("v_avg");
 	data_v_avg["value"] = vehicleData.v_avg;
-	data_v_avg["unit"] = "V";
+	data_v_avg["unit"] = vehicleData.units.volt;
 
 	JsonObject data_i_batt = data.createNestedObject("i_batt");
 	data_i_batt["value"] = vehicleData.i_batt;
-	data_i_batt["unit"] = "A";
+	data_i_batt["unit"] = vehicleData.units.ampere;
 
 	JsonObject data_i_acc = data.createNestedObject("i_acc");
 	data_i_acc["value"] = vehicleData.i_acc;
-	data_i_acc["unit"] = "A";
+	data_i_acc["unit"] = vehicleData.units.ampere;
 
 	JsonObject data_t_min = data.createNestedObject("t_min");
 	data_t_min["value"] = vehicleData.t_min;
-	data_t_min["unit"] = "ºC";
+	data_t_min["unit"] = vehicleData.units.celsius;
 
 	JsonObject data_t_max = data.createNestedObject("t_max");
 	data_t_max["value"] = vehicleData.t_max;
-	data_t_max["unit"] = "ºC";
+	data_t_max["unit"] = vehicleData.units.celsius;
 
 	JsonObject data_t_avg = data.createNestedObject("t_avg");
 	data_t_avg["value"] = vehicleData.t_avg;
-	data_t_avg["unit"] = "ºC";
+	data_t_avg["unit"] = vehicleData.units.celsius;
 
 	JsonObject data_t_motor = data.createNestedObject("t_motor");
 	data_t_motor["value"] = vehicleData.t_motor;
-	data_t_motor["unit"] = "ºC";
+	data_t_motor["unit"] = vehicleData.units.celsius;
 
 	JsonObject data_t_peu = data.createNestedObject("t_peu");
 	data_t_peu["value"] = vehicleData.t_peu;
-	data_t_peu["unit"] = "ºC";
+	data_t_peu["unit"] = vehicleData.units.celsius;
 
 	JsonObject data_soc = data.createNestedObject("soc");
 	data_soc["value"] = vehicleData.soc;
-	data_soc["unit"] = "%";
+	data_soc["unit"] = vehicleData.units.percentage;
 
 	JsonObject data_motor = data.createNestedObject("motor");
 	data_motor["value"] = vehicleData.motor;
-	data_motor["unit"] = "RPM";
+	data_motor["unit"] = vehicleData.units.rotations_per_minute;
 
 	JsonObject data_v_line1 = data.createNestedObject("v_line1");
 	data_v_line1["value"] = vehicleData.v_line1;
-	data_v_line1["unit"] = "V";
+	data_v_line1["unit"] = vehicleData.units.volt;
 
 	JsonObject data_v_line2 = data.createNestedObject("v_line2");
 	data_v_line2["value"] = vehicleData.v_line2;
-	data_v_line2["unit"] = "V";
+	data_v_line2["unit"] = vehicleData.units.volt;
 
 	JsonObject data_v_line3 = data.createNestedObject("v_line3");
 	data_v_line3["value"] = vehicleData.v_line3;
-	data_v_line3["unit"] = "V";
+	data_v_line3["unit"] = vehicleData.units.volt;
 
 	JsonObject data_i_line1 = data.createNestedObject("i_line1");
 	data_i_line1["value"] = vehicleData.i_line1;
-	data_i_line1["unit"] = "A";
+	data_i_line1["unit"] = vehicleData.units.ampere;
 
 	JsonObject data_i_line2 = data.createNestedObject("i_line2");
 	data_i_line2["value"] = vehicleData.i_line2;
-	data_i_line2["unit"] = "A";
+	data_i_line2["unit"] = vehicleData.units.ampere;
 
 	JsonObject data_i_line3 = data.createNestedObject("i_line3");
 	data_i_line3["value"] = vehicleData.i_line3;
-	data_i_line3["unit"] = "A";
+	data_i_line3["unit"] = vehicleData.units.ampere;
 
 	JsonObject data_p_line = data.createNestedObject("p_line");
 	data_p_line["value"] = "number";
-	data_p_line["unit"] = "kW";
+	data_p_line["unit"] = vehicleData.units.kilo_watt;
 
 	JsonObject data_v_aps = data.createNestedObject("v_aps");
 	data_v_aps["value"] = vehicleData.v_aps;
-	data_v_aps["unit"] = "V";
+	data_v_aps["unit"] = vehicleData.units.volt;
 
 	JsonObject data_v_setpoint = data.createNestedObject("v_setpoint");
 	data_v_setpoint["value"] = vehicleData.v_setpoint;
-	data_v_setpoint["unit"] = "V";
+	data_v_setpoint["unit"] = vehicleData.units.volt;
 
 	JsonObject data_i_setpoint = data.createNestedObject("i_setpoint");
 	data_i_setpoint["value"] = vehicleData.i_setpoint;
-	data_i_setpoint["unit"] = "kW";
+	data_i_setpoint["unit"] = vehicleData.units.kilo_watt;
 
 	JsonObject data_error = data.createNestedObject("error");
 	data_error["value"] = vehicleData.error;
-	data_error["unit"] = "error_codes";
+	data_error["unit"] = vehicleData.units.error_codes;
 
 	JsonObject data_longitude = data.createNestedObject("longitude");
 	data_longitude["value"] = locationData.longitude;
-	data_longitude["unit"] = "DDDMM.MMMM";
+	data_longitude["unit"] = locationData.units.coordinates;
 
 	JsonObject data_latitude = data.createNestedObject("latitude");
 	data_latitude["value"] = locationData.latitude;
-	data_latitude["unit"] = "DDDMM.MMMM";
+	data_latitude["unit"] = locationData.units.coordinates;
 
 	JsonObject data_altitude = data.createNestedObject("altitude");
 	data_altitude["value"] = locationData.altitude;
-	data_altitude["unit"] = "DDDMM.MMMM";
+	data_altitude["unit"] = locationData.units.coordinates;
 
 	JsonArray sensors = doc.createNestedArray("sensors");
 	JsonObject sensors_0 = sensors.createNestedObject();

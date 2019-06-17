@@ -1,17 +1,16 @@
 #ifndef JSONHANDLER_H
 #define JSONHANDLER_H
 
-#include <string>
-#include "MessageHandler.h"
-#include "Vehicle/VehicleData.h"
-#include "Positioning/Location.h"
-#include "Messaging/Commands/Command.h"
-#include "Messaging/Commands/ChargeVehicle.h"
-#include "Messaging/Commands/ReverseChargeVehicle.h"
-#include "Messaging/Commands/StopChargingVehicle.h"
 #include <ArduinoJson.h>
 #include <string>
 #include <memory>
+#include "MessageHandler.h"
+#include "Vehicle/VehicleData.h"
+#include "Positioning/Location.h"
+#include "./Commands/Command.h"
+#include "./Commands/ChargeVehicle.h"
+#include "./Commands/ReverseChargeVehicle.h"
+#include "./Commands/StopChargingVehicle.h"
 
 namespace Messaging
 {

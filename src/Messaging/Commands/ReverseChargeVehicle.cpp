@@ -9,7 +9,7 @@ ReverseChargeVehicle::ReverseChargeVehicle(std::shared_ptr<Vehicle::VehicleClien
 
 void ReverseChargeVehicle::execute()
 {
-	vehicle->startCharging(this->current);
+	vehicle->startReverseCharging(this->current);
 }
 
 void ReverseChargeVehicle::parseParams(std::string params)

@@ -2,6 +2,7 @@
 #define VEHICLEDATA_H
 
 #include <stdint.h>
+#include <string.h>
 
 namespace Vehicle
 {
@@ -41,6 +42,16 @@ public:
 	static bool isValid(_Tp value);
 
 	static bool isValid(float value);
+
+	static const struct Units {
+	const std::string volt = "V";
+	const std::string ampere = "A";
+	const std::string celsius = "ºC";
+	const std::string percentage = "%";
+	const std::string rotations_per_minute = "RPM";
+	const std::string kilo_watt = "kW";
+	const std::string error_codes = "error_codes";
+  } units;
 };
 }
 
