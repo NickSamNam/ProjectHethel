@@ -18,14 +18,14 @@ using namespace Messaging;
 #define MAX_REVERSE_CHARGING_CURRENT 6
 
 std::shared_ptr<VehicleClient> vehicle;
-std::shared_ptr<NetworkClient> network;
+NetworkClient network;
 std::shared_ptr<LocationProvider> location;
 std::shared_ptr<Notifier> notifier;
 std::shared_ptr<JsonHandler> messageHandler;
 
 void setup()
 {
-	// TODO - implement setup
+	network.setup();
 	vehicle = std::make_shared<VehicleClient>(
 		std::move(std::make_unique<AcPropulsion>(
 			VEHICLE_SERIAL,
@@ -34,5 +34,6 @@ void setup()
 
 void loop()
 {
+	network.publishMessage("lotus topic", "lotus message");
 	// TODO - implement loop
 }

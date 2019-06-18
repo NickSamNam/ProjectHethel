@@ -1,10 +1,12 @@
 #ifndef NETWORKCLIENT_H
 #define NETWORKCLIENT_H
 
+#include "Networking/MqttSubscribe.h"
+#include <ArduinoJson.h>
+#include <SoftwareSerial.h>
 #include <map>
 #include <string>
 #include <set>
-#include "MqttSubscribe.h"
 
 namespace Networking
 {
@@ -12,9 +14,16 @@ class NetworkClient
 {
 
 private:
-	std::map<std::string, std::set<MqttSubscribe>> subscriptions;
 
 public:
+	void setup();
+
+	void sendJson(JsonObject json);
+
+	JsonObject receiveJson();
+
+	JsonObject createJson(size_t capacity, char* json);
+
 	void connectNetwork();
 
 	void connectServer();
