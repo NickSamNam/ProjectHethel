@@ -1,35 +1,32 @@
 #include "Positioning/SamM8Q.h"
 
-String line;
-const int offset = 1; // Central European Time
-gps_fix currentFix;
-
 using namespace Positioning;
 
-Location SamM8Q::readData()
+SamM8Q::SamM8Q(HardwareSerial *serial)
 {
+	this->serial = serial;
+}
 
-	while (Serial1.available())
+String SamM8Q::readData()
+{
+	while (serial->available())
 	{
-		Serial1.readStringUntil("\n");
-		Serial.println(line);
+		const String line = serial->readStringUntil('\n');
 		if (line.startsWith("$GNGGA"))
 		{
-			return parseData();
+			return line;
 		}
 	}
 }
 
-Location SamM8Q::parseData()
+Location SamM8Q::parseData(String line)
 {
-	Serial.println("parsing");
-
 	struct Location loc;
 
 	loc.longitude = getValue(line, ',', 4).toFloat();
-	loc.directionLong = getValue(line, ',', 5);
+	loc.directionLong = getValue(line, ',', 5).charAt(0);
 	loc.latitude = getValue(line, ',', 2).toFloat();
-	loc.directionLat = getValue(line, ',', 3);
+	loc.directionLat = getValue(line, ',', 3).charAt(0);
 	loc.altitude = getValue(line, ',', 9).toFloat();
 
 	return loc;

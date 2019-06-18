@@ -3,20 +3,20 @@
 
 #include "GPSClient.h"
 #include "Location.h"
-#include <HardwareSerial.h>
-#include <NMEAGPS.h>
-#include <GPSport.h>
+#include <Arduino.h>
 
 namespace Positioning
 {
 class SamM8Q : GPSClient
 {
 
-
+private:
+	HardwareSerial *serial;
+	String readData();
+	static String getValue(String data, char separator, int index);
 public:
-	Location readData();
-	String getValue(String data, char separator, int index);
-	Location parseData();
+	SamM8Q(HardwareSerial *serial);
+	Location parseData(String line);
 };
 }
 

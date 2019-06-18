@@ -2,24 +2,11 @@
 
 using namespace Positioning;
 
-LocationProvider::LocationProvider(){
-	gps = new SamM8Q();
-}
+LocationProvider::LocationProvider(std::unique_ptr<GPSClient> gps) : gps(std::move(gps)) {}
 
 Location LocationProvider::getLocation()
 {
 	
-	return gps->readData();
+	return gps->parseData(gps->readData());
 }
 
-bool LocationProvider::isValid(Location loc)
-{
-	if(loc.latitude >= 0 && loc.latitude <= 9000)
-	{
-		if(loc.longitude >= 0 && loc.longitude <= 18000)
-		{
-			return true;
-		}
-	}
-	return false;
-}

@@ -2,6 +2,7 @@
 #define GPSCLIENT_H
 
 #include "Location.h"
+#include <Arduino.h>
 
 namespace Positioning 
 {
@@ -10,9 +11,9 @@ class GPSClient
 
 
 public:
-	unsigned char* readData();
+	virtual String readData() = 0;
 
-	Location parseData(unsigned char gpsData[]);
+	virtual Location parseData(String line) = 0;
 };
 }
 
