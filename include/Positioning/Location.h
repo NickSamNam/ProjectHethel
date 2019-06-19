@@ -15,7 +15,11 @@ public:
 	time_t timestamp;
 
 	static const struct Units {
-		const char* coordinates = "DDDMM.MMMM";
+		const char* DDDmm_mmmm = "DDDmm.mmmm"; //D degrees, m minutes.
+		const char* DDmm_mmmm = "DDmm.mmmm"; //D degrees, m minutes.
+		const char* cardinalDirection = "NSEW"; //North, South, East or West.
+		const char* meters = "m";
+		const char* timestamp = "hhmmss"; //h hours, m minutes, s seconds.
 	} units;
 };
 }
