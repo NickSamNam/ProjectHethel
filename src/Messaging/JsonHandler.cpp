@@ -214,20 +214,7 @@ std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
 	std::string command = commandChar;
 	std::string paramCurrent = paramCurrentChar;
 	
-	switch (hashit(command)){
-		case charge_vehicle:
-			output = this->commands.find("charge_vehicle")->second;
-			output->parseParams(paramCurrent);
-			return output;
-		case reverse_charge_vehicle:
-			output = this->commands.find("reverse_charge_vehicle")->second;
-			output->parseParams(paramCurrent);
-			return output;
-		case stop_charging_vehicle:
-			output = this->commands.find("stop_charging_vehicle")->second;
-			return output;
-		case error:
-			return 0;	
-		}
-	return 0;
+	output = this->commands.find(commandChar)->second;
+	output->parseParams(paramCurrent);
+	return output;
 }
