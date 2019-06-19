@@ -23,7 +23,9 @@ public:
 		const char* meters = "m";
 		//const char* timestamp = "hhmmss"; //h hours, m minutes, s seconds.
 	} units;
-	bool isValid();
+
+	bool isValid(long value);
+	bool isValid(char value);
 };
 }
 #endif
