@@ -4,7 +4,7 @@ using namespace Positioning;
 
 Location::Location()
     : longitude(0)
-    , directionLong(0)
+    , directionLong('\0')
     , latitude(0)
     , directionLat(0)
     , altitude(0)
