@@ -1,3 +1,7 @@
+#include <ArduinoJson.h>
+#include <sstream>
+#include <string>
+
 #include "Messaging/JsonHandler.h"
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
@@ -20,6 +24,40 @@
   ((NUMBER_OF_ELEMENTS) * sizeof(ARDUINOJSON_NAMESPACE::VariantSlot))
 using namespace Messaging;
 
+String reformatLocationTimeStamp(long timestamp){
+	char buffer[25];
+	char h1=0, h2=0, m1=0, m2=0, s1=0, s2=0;
+
+	std::ostringstream oss;
+	oss << timestamp;
+	std::string str = oss.str();
+
+	int size = str.size();
+
+	for( int i=0; i < size; i++){
+		if(i==0){
+			s2 = str[size-i];
+		}
+		if(i==1){
+			s1 = str[size-i];
+		}
+		if(i==2){
+			m2 = str[size-i];
+		}
+		if(i==3){
+			m1 = str[size-i];
+		}
+		if(i==4){
+			h2 = str[size-i];
+		}
+		if(i==5){
+			h1 = str[size-i];
+		}
+	}
+	sprintf(buffer, "0000-00-00T%c%c:%c%c:%c%c+00:00", h1, h2, m1, m2, s1, s2);
+	return buffer;
+}
+
 String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
 {
 	const unsigned int looseObjects GENERATE_JSON_LOOSE_OBJECTS;
@@ -31,7 +69,7 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	DynamicJsonDocument doc(capacity);
 
 	doc["version-api"] = VERSION_API;
-	doc["timestamp"] = "YYYY-MM-DDTHH:MM:SS+HH:MM";
+	doc["timestamp"] = reformatLocationTimeStamp(locationData.timestamp);
 	doc["identifier"] = IDENTIFIER;
 
 	JsonObject data = doc.createNestedObject("data");

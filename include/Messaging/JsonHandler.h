@@ -1,8 +1,9 @@
 #ifndef JSONHANDLER_H
 #define JSONHANDLER_H
 
-#include <WString.h>
+#include <String.h>
 #include <memory>
+
 #include "MessageHandler.h"
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
