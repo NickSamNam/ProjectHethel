@@ -1,7 +1,7 @@
 #ifndef JSONHANDLER_H
 #define JSONHANDLER_H
 
-#include <ArduinoJson.h>
+#include <WString.h>
 #include <memory>
 #include "MessageHandler.h"
 #include "Vehicle/VehicleData.h"
