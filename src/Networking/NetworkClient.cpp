@@ -2,7 +2,7 @@
 
 using namespace Networking;
 
-SoftwareSerial s(16,17);
+SoftwareSerial s(9,10);
 
 void NetworkClient::setup(){
 	s.begin(9600);
