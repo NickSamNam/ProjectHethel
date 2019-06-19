@@ -189,6 +189,8 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	sensors_27["direction_lat"] = locationData.isValid(locationData.directionLat);
 	JsonObject sensors_28 = sensors.createNestedObject();
 	sensors_28["altitude"] = locationData.isValid(locationData.altitude);
+	JsonObject sensors_29 = sensors.createNestedObject();
+	sensors_29["timestamp"] = locationData.isValid(locationData.timestamp);
 	
 	char json_string[capacity];
 	serializeJson(doc, json_string);
