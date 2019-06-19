@@ -19,7 +19,7 @@ public:
 
 	void execute();
 
-	void parseParams(std::string params);
+	void parseParams(std::map<String, String> params);
 };
 }
 
