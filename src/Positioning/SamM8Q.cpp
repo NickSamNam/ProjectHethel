@@ -29,18 +29,18 @@ String SamM8Q::readData()
 
 Location SamM8Q::parseData(String line)
 {
-	struct Location *loc = new Location();
+	Location loc;
 
 	if (line != "error")
 	{
-		loc->longitude = getValue(line, ',', 4).toFloat();
-		loc->directionLong = getValue(line, ',', 5).charAt(0);
-		loc->latitude = getValue(line, ',', 2).toFloat();
-		loc->directionLat = getValue(line, ',', 3).charAt(0);
-		loc->altitude = getValue(line, ',', 9).toFloat();
-		loc->timestamp = getValue(line, ',', 1).toFloat();
+		loc.longitude = getValue(line, ',', 4).toFloat();
+		loc.directionLong = getValue(line, ',', 5).charAt(0);
+		loc.latitude = getValue(line, ',', 2).toFloat();
+		loc.directionLat = getValue(line, ',', 3).charAt(0);
+		loc.altitude = getValue(line, ',', 9).toFloat();
+		loc.timestamp = getValue(line, ',', 1).toFloat();
 	}
-	return *loc;
+	return loc;
 }
 
 String SamM8Q::getValue(String data, char separator, int index)
