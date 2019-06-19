@@ -2,6 +2,7 @@
 #define GPSCLIENT_H
 
 #include "Location.h"
+#include <WString.h>
 
 namespace Positioning 
 {
@@ -10,9 +11,11 @@ class GPSClient
 
 
 public:
-	unsigned char* readData();
+	virtual ~GPSClient(){};
 
-	Location parseData(unsigned char gpsData[]);
+	virtual String readData() = 0;
+
+	virtual Location parseData(String line) = 0;
 };
 }
 
