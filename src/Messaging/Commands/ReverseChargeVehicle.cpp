@@ -1,4 +1,3 @@
-#include <sstream>
 #include "Messaging/Commands/ReverseChargeVehicle.h"
 
 using namespace Messaging;
@@ -13,10 +12,7 @@ void ReverseChargeVehicle::execute()
 	vehicle->startReverseCharging(this->current);
 }
 
-void ReverseChargeVehicle::parseParams(std::string params)
+void ReverseChargeVehicle::parseParams(std::map<String, String> params)
 {
-	float current;
-	std::istringstream iss (params);
-	iss >> current;
-	this->current = current;
+	current = params["current"].toInt();	
 }

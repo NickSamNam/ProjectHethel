@@ -184,37 +184,23 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	return output;
 }
 
-enum command_types {
-    charge_vehicle,
-    reverse_charge_vehicle,
-	stop_charging_vehicle,
-	error
-};
-
-command_types hashit (std::string const& inString) {
-    if (inString == "charge_vehicle") return charge_vehicle;
-    if (inString == "reverse_charge_vehicle") return reverse_charge_vehicle;
-	if (inString == "stop_charging_vehicle") return stop_charging_vehicle;
-	return error;
-}
-
 std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
 {
-	std::shared_ptr<Command> output;
-
 	const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(2) + 50;
 	DynamicJsonDocument doc(capacity);
 
 	deserializeJson(doc, message);
 
-	const char* commandChar = doc["command"];
+	const char* commandName = doc["command"];
 
-	const char* paramCurrentChar = doc["params"]["current"];
+	std::map<String, String> commandParams;
 
-	std::string command = commandChar;
-	std::string paramCurrent = paramCurrentChar;
-	
-	output = this->commands.find(commandChar)->second;
-	output->parseParams(paramCurrent);
-	return output;
+	for (JsonPair kv : doc["params"].as<JsonObject>())
+	{
+		commandParams.insert({kv.key().c_str(), kv.value().as<char*>()});
+	}
+
+	std::shared_ptr<Command> command = commands.find(commandName)->second;
+	command->parseParams(commandParams);
+	return command;
 }

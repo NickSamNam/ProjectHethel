@@ -1,7 +1,8 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include <string>
+#include <WString.h>
+#include <map>
 
 namespace Messaging
 {
@@ -12,7 +13,7 @@ public:
 
 	virtual void execute() = 0;
 
-	virtual void parseParams(std::string params) = 0;
+	virtual void parseParams(std::map<String, String> params) = 0;
 };
 }
 

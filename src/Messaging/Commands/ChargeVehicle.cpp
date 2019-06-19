@@ -1,4 +1,3 @@
-#include <sstream>
 #include "Messaging/Commands/ChargeVehicle.h"
 
 using namespace Messaging;
@@ -13,10 +12,7 @@ void ChargeVehicle::execute()
 	vehicle->startCharging(this->current);
 }
 
-void ChargeVehicle::parseParams(std::string params)
+void ChargeVehicle::parseParams(std::map<String, String> params)
 {
-	float current;
-	std::istringstream iss (params);
-	iss >> current;
-	this->current = current;
+	current = params["current"].toInt();
 }
