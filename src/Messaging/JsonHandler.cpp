@@ -31,7 +31,7 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	DynamicJsonDocument doc(capacity);
 
 	doc["version-api"] = VERSION_API;
-	doc["timestamp"] = locationData.timestamp;
+	doc["timestamp"] = "YYYY-MM-DDTHH:MM:SS+HH:MM";
 	doc["identifier"] = IDENTIFIER;
 
 	JsonObject data = doc.createNestedObject("data");
@@ -207,8 +207,6 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	sensors_27["direction_lat"] = locationData.isValid(locationData.directionLat);
 	JsonObject sensors_28 = sensors.createNestedObject();
 	sensors_28["altitude"] = locationData.isValid(locationData.altitude);
-	JsonObject sensors_29 = sensors.createNestedObject();
-	sensors_29["timestamp"] = locationData.isValid(locationData.timestamp);
 	
 	String output;
 	serializeJson(doc, output);
