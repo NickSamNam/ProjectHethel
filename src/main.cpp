@@ -4,6 +4,7 @@
 #include "Vehicle/AcPropulsion.h"
 #include "Networking/NetworkClient.h"
 #include "Positioning/LocationProvider.h"
+#include "Positioning/SamM8Q.h"
 #include "Notifying/Notifier.h"
 #include "Notifying/RgbLed.h"
 #include "Messaging/JsonHandler.h"
@@ -20,6 +21,8 @@ using namespace Messaging;
 #define MAX_CHARGING_CURRENT 6
 #define MAX_REVERSE_CHARGING_CURRENT 6
 #define VEHICLE_TIMEOUT_THRESHOLD 3000
+
+#define GPS_SERIAL &Serial1
 
 #define LED_PIN_RED 23
 #define LED_PIN_GREEN 22
@@ -40,12 +43,14 @@ void setup()
 	Serial.println(F("Started"));
 
 	// TODO - implement setup
-	vehicle = std::make_shared<VehicleClient>(
-		std::move(std::make_unique<AcPropulsion>(
-			VEHICLE_SERIAL,
-			MAX_CHARGING_CURRENT, MAX_REVERSE_CHARGING_CURRENT)));
-	notifier = std::make_shared<Notifier>(
-		std::move(std::make_unique<RgbLed>(LED_PIN_RED,	LED_PIN_BLUE, LED_PIN_GREEN)));
+	vehicle = std::make_shared<VehicleClient>(std::move(std::make_unique<AcPropulsion>(
+		VEHICLE_SERIAL, MAX_CHARGING_CURRENT, MAX_REVERSE_CHARGING_CURRENT)));
+
+	location = std::make_shared<LocationProvider>(std::move(std::make_unique<SamM8Q>(
+		GPS_SERIAL)));
+
+	notifier = std::make_shared<Notifier>(std::move(std::make_unique<RgbLed>(
+		LED_PIN_RED, LED_PIN_BLUE, LED_PIN_GREEN)));
 }
 
 void loop()
@@ -61,4 +66,5 @@ void loop()
 	{
 		notifier->setVmsError();
 	}
+	Location locationData = location->getLocation();
 }
