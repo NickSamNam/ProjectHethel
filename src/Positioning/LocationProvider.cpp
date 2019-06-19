@@ -2,7 +2,10 @@
 
 using namespace Positioning;
 
+LocationProvider::LocationProvider(std::unique_ptr<GPSClient> gps) : gps(std::move(gps)) {}
+
 Location LocationProvider::getLocation()
 {
-	// TODO - implement LocationProvider::getLocation
+	return gps->parseData(gps->readData());
 }
+

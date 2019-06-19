@@ -13,7 +13,7 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	DynamicJsonDocument doc(capacity);
 
 	doc["version-api"] = VERSION_API;
-	doc["timestamp"] = "YYYY-MM-DDTHH:MM:SS+HH:MM";
+	doc["timestamp"] = locationData.timestamp;
 	doc["identifier"] = IDENTIFIER;
 
 	JsonObject data = doc.createNestedObject("data");
@@ -114,9 +114,17 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	data_longitude["value"] = locationData.longitude;
 	data_longitude["unit"] = Positioning::Location::units.DDDmm_mmmm;
 
+	JsonObject data_direction_long = data.createNestedObject("direction_long");
+	data_direction_long["value"] = locationData.directionLong;
+	data_direction_long["unit"] = Positioning::Location::units.cardinalDirection;
+
 	JsonObject data_latitude = data.createNestedObject("latitude");
 	data_latitude["value"] = locationData.latitude;
 	data_latitude["unit"] = Positioning::Location::units.DDmm_mmmm;
+
+	JsonObject data_direction_lat = data.createNestedObject("direction_lat");
+	data_direction_lat["value"] = locationData.directionLat;
+	data_direction_lat["unit"] = Positioning::Location::units.cardinalDirection;
 
 	JsonObject data_altitude = data.createNestedObject("altitude");
 	data_altitude["value"] = locationData.altitude;
@@ -171,13 +179,17 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	sensors_22["i_setpoint"] = vehicleData.isValid(vehicleData.i_setpoint);
 	JsonObject sensors_23 = sensors.createNestedObject();
 	sensors_23["error"] = vehicleData.isValid(vehicleData.error);
-	// JsonObject sensors_24 = sensors.createNestedObject();
-	// sensors_24["longitude"] = tba
-	// JsonObject sensors_25 = sensors.createNestedObject();
-	// sensors_25["latitude"] = tba
-	// JsonObject sensors_26 = sensors.createNestedObject();
-	// sensors_26["altitude"] = tba
-
+	JsonObject sensors_24 = sensors.createNestedObject();
+	sensors_24["longitude"] = locationData.isValid(locationData.longitude);
+	JsonObject sensors_25 = sensors.createNestedObject();
+	sensors_25["direction_long"] = locationData.isValid(locationData.directionLong);
+	JsonObject sensors_26 = sensors.createNestedObject();
+	sensors_26["latitude"] = locationData.isValid(locationData.latitude);
+	JsonObject sensors_27 = sensors.createNestedObject();
+	sensors_27["direction_lat"] = locationData.isValid(locationData.directionLat);
+	JsonObject sensors_28 = sensors.createNestedObject();
+	sensors_28["altitude"] = locationData.isValid(locationData.altitude);
+	
 	char json_string[capacity];
 	serializeJson(doc, json_string);
 	std::string output = json_string;
