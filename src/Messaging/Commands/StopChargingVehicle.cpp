@@ -11,3 +11,5 @@ void StopChargingVehicle::execute()
 {
 	this->vehicle->stopCharging();
 }
+
+void StopChargingVehicle::parseParams(std::string params){}

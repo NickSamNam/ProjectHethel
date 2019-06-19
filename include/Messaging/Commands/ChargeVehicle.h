@@ -2,7 +2,6 @@
 #define CHARGEVEHICLE_H
 
 #include <string>
-#include <sstream>
 #include "Command.h"
 #include "Vehicle/VehicleClient.h"
 

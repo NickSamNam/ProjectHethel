@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Messaging/Commands/ReverseChargeVehicle.h"
 
 using namespace Messaging;

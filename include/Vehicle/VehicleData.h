@@ -2,7 +2,7 @@
 #define VEHICLEDATA_H
 
 #include <stdint.h>
-#include <string.h>
+#include <string>
 
 namespace Vehicle
 {
@@ -44,13 +44,13 @@ public:
 	static bool isValid(float value);
 
 	static const struct Units {
-	const std::string volt = "V";
-	const std::string ampere = "A";
-	const std::string celsius = "ºC";
-	const std::string percentage = "%";
-	const std::string rotations_per_minute = "RPM";
-	const std::string kilo_watt = "kW";
-	const std::string error_codes = "error_codes";
+	const char* volt = "V";
+	const char* ampere = "A";
+	const char* celsius = "ºC";
+	const char* percentage = "%";
+	const char* rotations_per_minute = "RPM";
+	const char* kilo_watt = "kW";
+	const char* error_codes = "error_codes";
   } units;
 };
 }

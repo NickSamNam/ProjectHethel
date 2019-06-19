@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Messaging/Commands/ChargeVehicle.h"
 
 using namespace Messaging;

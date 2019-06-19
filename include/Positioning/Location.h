@@ -2,6 +2,7 @@
 #define LOCATION_H
 
 #include <Time.h>
+#include <string>
 
 namespace Positioning
 {
@@ -14,7 +15,7 @@ public:
 	time_t timestamp;
 
 	static const struct Units {
-		const std::string coordinates = "DDDMM.MMMM";
+		const char* coordinates = "DDDMM.MMMM";
 	} units;
 };
 }
