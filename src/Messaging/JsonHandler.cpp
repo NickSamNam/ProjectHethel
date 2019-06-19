@@ -5,11 +5,29 @@
 #define VERSION_API "1.0"
 #define IDENTIFIER "lotus-001"
 
+#define GENERATE_JSON_LOOSE_OBJECTS = 5
+#define GENERATE_JSON_ARRAY_ELEMENTS = 29
+#define GENERATE_JSON_DATA_OBJECT_ELEMENTS = 2
+#define GENERATE_JSON_SENSORS_OBJECT_ELEMENTS = 1
+
+#define PARSE_JSON_COMMAND_OBJECT_SIZE = 1
+#define PARSE_JSON_PARAMS_OBJECT_SIZE = 2
+#define PARSE_JSON_MARGIN = 50
+
+#define JSON_ARRAY_SIZE(NUMBER_OF_ELEMENTS) \
+  ((NUMBER_OF_ELEMENTS) * sizeof(ARDUINOJSON_NAMESPACE::VariantSlot))
+#define JSON_OBJECT_SIZE(NUMBER_OF_ELEMENTS) \
+  ((NUMBER_OF_ELEMENTS) * sizeof(ARDUINOJSON_NAMESPACE::VariantSlot))
 using namespace Messaging;
 
 std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
 {
-	const size_t capacity = JSON_ARRAY_SIZE(24) + 24*JSON_OBJECT_SIZE(1) + 26*JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(26);
+	const unsigned int looseObjects GENERATE_JSON_LOOSE_OBJECTS;
+	const unsigned int arrayElements GENERATE_JSON_ARRAY_ELEMENTS;
+	const unsigned int dataObjectElements GENERATE_JSON_DATA_OBJECT_ELEMENTS;
+	const unsigned int sensorsObjectElements GENERATE_JSON_SENSORS_OBJECT_ELEMENTS;
+
+	const size_t capacity = JSON_ARRAY_SIZE(arrayElements) + arrayElements*JSON_OBJECT_SIZE(sensorsObjectElements) + arrayElements*JSON_OBJECT_SIZE(dataObjectElements) + JSON_OBJECT_SIZE(looseObjects) + JSON_OBJECT_SIZE(dataObjectElements);
 	DynamicJsonDocument doc(capacity);
 
 	doc["version-api"] = VERSION_API;
@@ -200,7 +218,11 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 
 std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
 {
-	const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(2) + 50;
+	const unsigned int commandElements PARSE_JSON_COMMAND_OBJECT_SIZE;
+	const unsigned int paramsElements PARSE_JSON_PARAMS_OBJECT_SIZE;
+	const unsigned int margin PARSE_JSON_MARGIN;
+
+	const size_t capacity = JSON_OBJECT_SIZE(commandElements) + JSON_OBJECT_SIZE(paramsElements) + margin;
 	DynamicJsonDocument doc(capacity);
 
 	deserializeJson(doc, message);
