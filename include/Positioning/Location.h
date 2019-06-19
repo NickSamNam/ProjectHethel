@@ -15,7 +15,7 @@ public:
 	long altitude; // in meters
 	long timestamp; // format hhmmss
 
-	static bool isValid(Location loc);
+	bool isValid();
 };
 }
 #endif

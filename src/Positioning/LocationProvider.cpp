@@ -6,7 +6,6 @@ LocationProvider::LocationProvider(std::unique_ptr<GPSClient> gps) : gps(std::mo
 
 Location LocationProvider::getLocation()
 {
-	
 	return gps->parseData(gps->readData());
 }
 

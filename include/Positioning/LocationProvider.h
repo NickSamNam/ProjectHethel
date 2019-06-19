@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "Location.h"
-#include "SamM8Q.h"
+#include "GPSClient.h"
 
 namespace Positioning
 {
@@ -15,6 +15,11 @@ private:
 public:
 	
 	LocationProvider(std::unique_ptr<GPSClient> gps);
+
+	LocationProvider(const LocationProvider &) = delete;
+
+	LocationProvider &operator=(const LocationProvider &) = delete;
+	
 	Location getLocation();
 	
 };

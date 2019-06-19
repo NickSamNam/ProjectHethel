@@ -5,10 +5,12 @@ using namespace Positioning;
 SamM8Q::SamM8Q(HardwareSerial *serial)
 {
 	this->serial = serial;
+	serial->begin(9600);
 }
 
 String SamM8Q::readData()
 {
+	int iterations = 0;
 	while (serial->available())
 	{
 		const String line = serial->readStringUntil('\n');
@@ -16,20 +18,29 @@ String SamM8Q::readData()
 		{
 			return line;
 		}
+		else if (iterations == 100)
+		{
+			return "error"; // no line with $GNGGA found
+		}
+		iterations++;
 	}
+	return "error"; // serial not available
 }
 
 Location SamM8Q::parseData(String line)
 {
-	struct Location loc;
+	struct Location *loc = new Location();
 
-	loc.longitude = getValue(line, ',', 4).toFloat();
-	loc.directionLong = getValue(line, ',', 5).charAt(0);
-	loc.latitude = getValue(line, ',', 2).toFloat();
-	loc.directionLat = getValue(line, ',', 3).charAt(0);
-	loc.altitude = getValue(line, ',', 9).toFloat();
-
-	return loc;
+	if (line != "error")
+	{
+		loc->longitude = getValue(line, ',', 4).toFloat();
+		loc->directionLong = getValue(line, ',', 5).charAt(0);
+		loc->latitude = getValue(line, ',', 2).toFloat();
+		loc->directionLat = getValue(line, ',', 3).charAt(0);
+		loc->altitude = getValue(line, ',', 9).toFloat();
+		loc->timestamp = getValue(line, ',', 1).toFloat();
+	}
+	return *loc;
 }
 
 String SamM8Q::getValue(String data, char separator, int index)

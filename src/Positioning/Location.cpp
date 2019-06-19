@@ -9,12 +9,11 @@ Location::Location()
     , directionLat('N')
     , altitude(0)
 	, timestamp(0)
-
     {}
 
-    bool Location::isValid(Location loc)
+bool Location::isValid()
 {
-	if(loc.latitude > 0 && loc.latitude < 9000 && loc.longitude > 0 && loc.longitude < 18000 && loc.altitude > -500 && loc.altitude < 6000)
+	if(latitude > 0 && latitude < 9000 && longitude > 0 && longitude < 18000 && altitude > -500 && altitude < 6000)
 	{
 		return true;
 	}
