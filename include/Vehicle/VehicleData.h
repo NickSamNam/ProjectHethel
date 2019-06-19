@@ -2,7 +2,6 @@
 #define VEHICLEDATA_H
 
 #include <stdint.h>
-#include <string>
 
 namespace Vehicle
 {

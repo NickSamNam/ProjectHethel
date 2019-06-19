@@ -1,7 +1,6 @@
 #ifndef REVERSECHARGEVEHICLE_H
 #define REVERSECHARGEVEHICLE_H
 
-#include <string>
 #include "Command.h"
 #include "Vehicle/VehicleClient.h"
 

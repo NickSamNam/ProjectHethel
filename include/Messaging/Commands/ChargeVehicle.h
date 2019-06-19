@@ -1,7 +1,6 @@
 #ifndef CHARGEVEHICLE_H
 #define CHARGEVEHICLE_H
 
-#include <string>
 #include "Command.h"
 #include "Vehicle/VehicleClient.h"
 

@@ -1,7 +1,6 @@
 #ifndef STOPCHARGINGVEHICLE_H
 #define STOPCHARGINGVEHICLE_H
 
-#include <string>
 #include "Command.h"
 #include "Vehicle/VehicleClient.h"
 

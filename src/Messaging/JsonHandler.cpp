@@ -20,7 +20,7 @@
   ((NUMBER_OF_ELEMENTS) * sizeof(ARDUINOJSON_NAMESPACE::VariantSlot))
 using namespace Messaging;
 
-std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
+String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
 {
 	const unsigned int looseObjects GENERATE_JSON_LOOSE_OBJECTS;
 	const unsigned int arrayElements GENERATE_JSON_ARRAY_ELEMENTS;
@@ -210,13 +210,13 @@ std::string JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Posit
 	JsonObject sensors_29 = sensors.createNestedObject();
 	sensors_29["timestamp"] = locationData.isValid(locationData.timestamp);
 	
-	char json_string[capacity];
-	serializeJson(doc, json_string);
-	std::string output = json_string;
+	String output;
+	serializeJson(doc, output);
+	
 	return output;
 }
 
-std::shared_ptr<Command> JsonHandler::parseMessage(std::string message)
+std::shared_ptr<Command> JsonHandler::parseMessage(String message)
 {
 	const unsigned int commandElements PARSE_JSON_COMMAND_OBJECT_SIZE;
 	const unsigned int paramsElements PARSE_JSON_PARAMS_OBJECT_SIZE;

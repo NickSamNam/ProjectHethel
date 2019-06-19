@@ -2,7 +2,6 @@
 #define JSONHANDLER_H
 
 #include <ArduinoJson.h>
-#include <string>
 #include <memory>
 #include "MessageHandler.h"
 #include "Vehicle/VehicleData.h"
@@ -17,9 +16,9 @@ namespace Messaging
 class JsonHandler : MessageHandler
 {
 public:
-	std::string generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData);
+	String generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData);
 
-	std::shared_ptr<Command> parseMessage(std::string message);
+	std::shared_ptr<Command> parseMessage(String message);
 };
 }
 
