@@ -227,34 +227,34 @@ int AcPropulsion::getData(VehicleData *data)
 	switch (header.id_and_timestamp.payload_id)
 	{
 	case L3PAYLOAD_ID_BMS_SUMMARY:
-		dataAccum.v_min = frame.bmsSummary.v_min / 1000;
-		dataAccum.v_max = frame.bmsSummary.v_max / 1000;
-		dataAccum.v_avg = frame.bmsSummary.v_avg / 1000;
-		dataAccum.t_min = frame.bmsSummary.t_min / 10;
-		dataAccum.t_max = frame.bmsSummary.t_max / 10;
-		dataAccum.t_avg = frame.bmsSummary.t_avg / 10;
+		dataAccum.v_min = (float) frame.bmsSummary.v_min / 1000.0f;
+		dataAccum.v_max = (float) frame.bmsSummary.v_max / 1000.0f;
+		dataAccum.v_avg = (float) frame.bmsSummary.v_avg / 1000.0f;
+		dataAccum.t_min = (float) frame.bmsSummary.t_min / 10.0f;
+		dataAccum.t_max = (float) frame.bmsSummary.t_max / 10.0f;
+		dataAccum.t_avg = (float) frame.bmsSummary.t_avg / 10.0f;
 		dataAccum.soc = frame.bmsSummary.soc_percent;
 		accumFlag |= (1 << L3PAYLOAD_ID_BMS_SUMMARY);
 		break;
 	case L3FRAME_ID_SYS_HIRATE:
-		dataAccum.v_setpoint = frame.sysHighRate.v_bat_x10 / 1000; // probably not
-		dataAccum.i_batt = frame.sysHighRate.i_sys_x10 / 10;	   // probably
-		dataAccum.i_motor = frame.sysHighRate.i_hyb_x10 / 10;	  // probably
-		dataAccum.i_acc = frame.sysHighRate.i_aux_x10 / 10;		   // probably
+		dataAccum.v_setpoint = (float) frame.sysHighRate.v_bat_x10 / 1000.0f; // probably not
+		dataAccum.i_batt = (float) frame.sysHighRate.i_sys_x10 / 10.0f;	   // probably
+		dataAccum.i_motor = (float) frame.sysHighRate.i_hyb_x10 / 10.0f;	  // probably
+		dataAccum.i_acc = (float) frame.sysHighRate.i_aux_x10 / 10.0f;		   // probably
 		dataAccum.motor = frame.sysHighRate.motor_rpm;
 		accumFlag |= (1 << L3FRAME_ID_SYS_HIRATE);
 		break;
 	case L3FRAME_ID_SYS_LOWRATE:
-		dataAccum.t_motor = frame.sysLowRate.motor_temp_x10 / 10;
-		dataAccum.t_peu = frame.sysLowRate.motor_temp_x10 / 10;
-		dataAccum.i_line1 = frame.sysLowRate.i_line_x10 / 10;								// probably
+		dataAccum.t_motor = (float) frame.sysLowRate.motor_temp_x10 / 10.0f;
+		dataAccum.t_peu = (float) frame.sysLowRate.motor_temp_x10 / 10.0f;
+		dataAccum.i_line1 = (float) frame.sysLowRate.i_line_x10 / 10.0f;								// probably
 		dataAccum.i_line2 = 0;																// probably
 		dataAccum.i_line3 = 0;																// probably
-		dataAccum.v_line1 = frame.sysLowRate.v_line_x10 / 10;								// probably
+		dataAccum.v_line1 = (float) frame.sysLowRate.v_line_x10 / 10.0f;								// probably
 		dataAccum.v_line2 = 0;																// probably
 		dataAccum.v_line3 = 0;																// probably
-		dataAccum.p_line = frame.sysLowRate.i_line_x10 * frame.sysLowRate.v_line_x10 / 100; // probably
-		dataAccum.v_aps = frame.sysLowRate.v_aps_x100 / 100;
+		dataAccum.p_line = (float) (frame.sysLowRate.i_line_x10 * frame.sysLowRate.v_line_x10) / 100.0f; // probably
+		dataAccum.v_aps = (float) frame.sysLowRate.v_aps_x100 / 100.0f;
 		dataAccum.i_setpoint = frame.sysLowRate.line_ampacity; // probably
 		dataAccum.error = frame.sysLowRate.bms_error[1];	   // maybe
 		accumFlag |= (1 << L3FRAME_ID_SYS_LOWRATE);
