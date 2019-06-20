@@ -9,10 +9,10 @@ ChargeVehicle::	ChargeVehicle(std::shared_ptr<Vehicle::VehicleClient> vehicle)
 
 void ChargeVehicle::execute()
 {
-	// TODO - implement ChargeVehicle::execute
+	vehicle->startCharging(this->current);
 }
 
-void ChargeVehicle::parseParams(std::string params)
+void ChargeVehicle::parseParams(std::map<String, String> params)
 {
-	// TODO - implement ChargeVehicle::parseParams
+	current = params["current"].toInt();
 }

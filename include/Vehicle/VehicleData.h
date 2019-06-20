@@ -41,6 +41,16 @@ public:
 	static bool isValid(_Tp value);
 
 	static bool isValid(float value);
+
+	static const struct Units {
+	const char* volt = "V";
+	const char* ampere = "A";
+	const char* celsius = "ºC";
+	const char* percentage = "%";
+	const char* rotations_per_minute = "RPM";
+	const char* kilo_watt = "kW";
+	const char* error_codes = "error_codes";
+  } units;
 };
 }
 

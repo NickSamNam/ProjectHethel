@@ -1,14 +1,12 @@
 #ifndef CHARGEVEHICLE_H
 #define CHARGEVEHICLE_H
 
-#include <string>
-#include "../JsonParams.h"
 #include "Command.h"
 #include "Vehicle/VehicleClient.h"
 
 namespace Messaging
 {
-class ChargeVehicle : Command, JsonParams
+class ChargeVehicle : Command
 {
 private:
 	std::shared_ptr<Vehicle::VehicleClient> vehicle;
@@ -20,7 +18,7 @@ public:
 
 	void execute();
 
-	void parseParams(std::string params);
+	void parseParams(std::map<String, String> params);
 };
 }
 
