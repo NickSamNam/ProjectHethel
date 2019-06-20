@@ -77,10 +77,15 @@ void loop()
 		notifier->setVmsError();
 	}
 	Location locationData = location->getLocation();
-	String message = messageHandler->generateMessage(vehicleData, locationData);
+	String messageOut = messageHandler->generateMessage(vehicleData, locationData);
 	
 	if (VehicleData::isValid(vehicleData.timestamp) || locationData.isValid(locationData.timestamp))
 	{
-		Serial.println(message);
+		Serial.println(messageOut);
+	}
+
+	if (Serial.available())
+	{
+		messageHandler->parseMessage(Serial.readStringUntil('\r'))->execute();
 	}
 }
