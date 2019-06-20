@@ -151,7 +151,7 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 
 	JsonObject data_error = data.createNestedObject("error");
 	data_error["value"] = vehicleData.error;
-	data_error["unit"] = Vehicle::VehicleData::units.error_codes;
+	data_error["unit"] = Vehicle::VehicleData::Units::error_codes;
 
 	JsonObject data_longitude = data.createNestedObject("longitude");
 	data_longitude["value"] = concatenateCardinalDirection(locationData.longitude, locationData.directionLong);
