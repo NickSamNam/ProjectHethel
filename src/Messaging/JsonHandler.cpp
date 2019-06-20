@@ -153,15 +153,15 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 
 	JsonObject data_longitude = data.createNestedObject("longitude");
 	data_longitude["value"] = concatenateCardinalDirection(locationData.longitude, locationData.directionLong);
-	data_longitude["unit"] = Positioning::Location::units.DDDmm_mmmm_C;
+	data_longitude["unit"] = Positioning::Location::Units::DDDmm_mmmm_C;
 
 	JsonObject data_latitude = data.createNestedObject("latitude");
 	data_latitude["value"] = concatenateCardinalDirection(locationData.latitude, locationData.directionLat);
-	data_latitude["unit"] = Positioning::Location::units.DDmm_mmmm_C;
+	data_latitude["unit"] = Positioning::Location::Units::DDmm_mmmm_C;
 
 	JsonObject data_altitude = data.createNestedObject("altitude");
 	data_altitude["value"] = locationData.altitude;
-	data_altitude["unit"] = Positioning::Location::units.meters;
+	data_altitude["unit"] = Positioning::Location::Units::meters;
 
 	JsonArray sensors = doc.createNestedArray("sensors");
 	JsonObject sensors_0 = sensors.createNestedObject();
