@@ -1,5 +1,4 @@
 #include <ArduinoJson.h>
-#include <sstream>
 #include <string>
 
 #include "Messaging/JsonHandler.h"
