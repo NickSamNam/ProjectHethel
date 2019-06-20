@@ -8,9 +8,6 @@
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
 #include "./Commands/Command.h"
-#include "./Commands/ChargeVehicle.h"
-#include "./Commands/ReverseChargeVehicle.h"
-#include "./Commands/StopChargingVehicle.h"
 
 namespace Messaging
 {
