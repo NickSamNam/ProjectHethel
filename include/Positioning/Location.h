@@ -1,19 +1,21 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
-#include <Time.h>
-
 namespace Positioning
 {
 struct Location
 {
 
 public:
-	long longitude;
-	long latitude;
-	long altitude;
-	time_t timestamp;
+	Location();
+	long longitude; // DDDmm.mmmm degrees and minutes
+	char directionLong; // W or E
+	long latitude; // DDmm.mmmm degrees and minutes
+	char directionLat; // N or S
+	long altitude; // in meters
+	long timestamp; // format hhmmss
+
+	bool isValid();
 };
 }
-
 #endif
