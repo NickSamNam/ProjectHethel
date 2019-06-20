@@ -238,13 +238,9 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	JsonObject sensors_24 = sensors.createNestedObject();
 	sensors_24["longitude"] = locationData.isValid(locationData.longitude);
 	JsonObject sensors_25 = sensors.createNestedObject();
-	sensors_25["direction_long"] = locationData.isValid(locationData.directionLong);
+	sensors_25["latitude"] = locationData.isValid(locationData.latitude);
 	JsonObject sensors_26 = sensors.createNestedObject();
-	sensors_26["latitude"] = locationData.isValid(locationData.latitude);
-	JsonObject sensors_27 = sensors.createNestedObject();
-	sensors_27["direction_lat"] = locationData.isValid(locationData.directionLat);
-	JsonObject sensors_28 = sensors.createNestedObject();
-	sensors_28["altitude"] = locationData.isValid(locationData.altitude);
+	sensors_26["altitude"] = locationData.isValid(locationData.altitude);
 	
 	String output;
 	serializeJson(doc, output);
