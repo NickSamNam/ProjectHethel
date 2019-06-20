@@ -32,7 +32,7 @@ std::shared_ptr<VehicleClient> vehicle;
 std::shared_ptr<NetworkClient> network;
 std::shared_ptr<LocationProvider> location;
 std::shared_ptr<Notifier> notifier;
-std::shared_ptr<JsonHandler> messageHandler;
+std::shared_ptr<MessageHandler> messageHandler;
 
 uint32_t prevVehicleMillis = 0;
 
@@ -42,7 +42,6 @@ void setup()
 	Serial.begin(USB_SERIAL_BAUD);
 	Serial.println(F("Started"));
 
-	// TODO - implement setup
 	vehicle = std::make_shared<VehicleClient>(std::move(std::make_unique<AcPropulsion>(
 		VEHICLE_SERIAL, MAX_CHARGING_CURRENT, MAX_REVERSE_CHARGING_CURRENT)));
 
@@ -51,11 +50,12 @@ void setup()
 
 	notifier = std::make_shared<Notifier>(std::move(std::make_unique<RgbLed>(
 		LED_PIN_RED, LED_PIN_BLUE, LED_PIN_GREEN)));
+
+	messageHandler = std::make_shared<JsonHandler>();
 }
 
 void loop()
 {
-	// TODO - implement loop
 	VehicleData vehicleData = vehicle->getData();
 	if (VehicleData::isValid(vehicleData.timestamp))
 	{
@@ -67,4 +67,10 @@ void loop()
 		notifier->setVmsError();
 	}
 	Location locationData = location->getLocation();
+	String message = messageHandler->generateMessage(vehicleData, locationData);
+	
+	if (VehicleData::isValid(vehicleData.timestamp) || locationData.isValid(locationData.timestamp))
+	{
+		Serial.println(message);
+	}
 }

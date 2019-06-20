@@ -14,7 +14,7 @@
 
 namespace Messaging
 {
-class JsonHandler : MessageHandler
+class JsonHandler : public MessageHandler
 {
 public:
 	String generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData);

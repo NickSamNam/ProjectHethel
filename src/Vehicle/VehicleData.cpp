@@ -45,3 +45,11 @@ bool VehicleData::isValid(float value)
 {
     return !std::isnan(value);
 }
+
+const char* VehicleData::Units::volt = "V";
+const char* VehicleData::Units::ampere = "A";
+const char* VehicleData::Units::celsius = "°C";
+const char* VehicleData::Units::percentage = "%";
+const char* VehicleData::Units::rotations_per_minute = "RPM";
+const char* VehicleData::Units::kilo_watt = "kW";
+const char* VehicleData::Units::error_codes = "error_codes";
