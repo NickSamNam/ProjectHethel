@@ -8,14 +8,15 @@
 #define VERSION_API "1.0"
 #define IDENTIFIER "lotus-001"
 
-#define GENERATE_JSON_LOOSE_OBJECTS = 5
-#define GENERATE_JSON_ARRAY_ELEMENTS = 29
-#define GENERATE_JSON_DATA_OBJECT_ELEMENTS = 2
-#define GENERATE_JSON_SENSORS_OBJECT_ELEMENTS = 1
+#define GENERATE_JSON_LOOSE_OBJECTS 5
+#define GENERATE_JSON_ARRAY_ELEMENTS 29
+#define GENERATE_JSON_DATA_OBJECT_ELEMENTS 2
+#define GENERATE_JSON_SENSORS_OBJECT_ELEMENTS 1
+#define GENERATE_JSON_MARGIN 1000
 
-#define PARSE_JSON_COMMAND_OBJECT_SIZE = 1
-#define PARSE_JSON_PARAMS_OBJECT_SIZE = 2
-#define PARSE_JSON_MARGIN = 50
+#define PARSE_JSON_COMMAND_OBJECT_SIZE 1
+#define PARSE_JSON_PARAMS_OBJECT_SIZE 2
+#define PARSE_JSON_MARGIN 50
 
 #define JSON_ARRAY_SIZE(NUMBER_OF_ELEMENTS) \
   ((NUMBER_OF_ELEMENTS) * sizeof(ARDUINOJSON_NAMESPACE::VariantSlot))
@@ -45,12 +46,7 @@ String concatenateCardinalDirection(long coordinates, char direction){
 
 String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData)
 {
-	const unsigned int looseObjects GENERATE_JSON_LOOSE_OBJECTS;
-	const unsigned int arrayElements GENERATE_JSON_ARRAY_ELEMENTS;
-	const unsigned int dataObjectElements GENERATE_JSON_DATA_OBJECT_ELEMENTS;
-	const unsigned int sensorsObjectElements GENERATE_JSON_SENSORS_OBJECT_ELEMENTS;
-
-	const size_t capacity = JSON_ARRAY_SIZE(arrayElements) + arrayElements*JSON_OBJECT_SIZE(sensorsObjectElements) + arrayElements*JSON_OBJECT_SIZE(dataObjectElements) + JSON_OBJECT_SIZE(looseObjects) + JSON_OBJECT_SIZE(dataObjectElements);
+	const size_t capacity = JSON_ARRAY_SIZE(GENERATE_JSON_ARRAY_ELEMENTS) + GENERATE_JSON_ARRAY_ELEMENTS*JSON_OBJECT_SIZE(GENERATE_JSON_SENSORS_OBJECT_ELEMENTS) + GENERATE_JSON_ARRAY_ELEMENTS*JSON_OBJECT_SIZE(GENERATE_JSON_DATA_OBJECT_ELEMENTS) + JSON_OBJECT_SIZE(GENERATE_JSON_LOOSE_OBJECTS) + JSON_OBJECT_SIZE(GENERATE_JSON_DATA_OBJECT_ELEMENTS) + GENERATE_JSON_MARGIN;
 	DynamicJsonDocument doc(capacity);
 
 	doc["version-api"] = VERSION_API;
@@ -227,11 +223,7 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 
 std::shared_ptr<Command> JsonHandler::parseMessage(String message)
 {
-	const unsigned int commandElements PARSE_JSON_COMMAND_OBJECT_SIZE;
-	const unsigned int paramsElements PARSE_JSON_PARAMS_OBJECT_SIZE;
-	const unsigned int margin PARSE_JSON_MARGIN;
-
-	const size_t capacity = JSON_OBJECT_SIZE(commandElements) + JSON_OBJECT_SIZE(paramsElements) + margin;
+	const size_t capacity = JSON_OBJECT_SIZE(PARSE_JSON_COMMAND_OBJECT_SIZE) + JSON_OBJECT_SIZE(PARSE_JSON_PARAMS_OBJECT_SIZE) + PARSE_JSON_MARGIN;
 	DynamicJsonDocument doc(capacity);
 
 	deserializeJson(doc, message);
