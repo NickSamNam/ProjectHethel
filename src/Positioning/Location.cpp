@@ -4,18 +4,19 @@ using namespace Positioning;
 
 Location::Location()
     : longitude(0)
-    , directionLong('W')
+    , directionLong('\0')
     , latitude(0)
-    , directionLat('N')
+    , directionLat('\0')
     , altitude(0)
-	, timestamp(0)
+    , timestamp('\0')
     {}
 
-bool Location::isValid()
+bool Location::isValid(long value)
 {
-	if(latitude > 0 && latitude < 9000 && longitude > 0 && longitude < 18000 && altitude > -500 && altitude < 6000)
-	{
-		return true;
-	}
-	return false;
+    return value != 0;
+}
+
+bool Location::isValid(char value)
+{
+    return value != '\0';
 }

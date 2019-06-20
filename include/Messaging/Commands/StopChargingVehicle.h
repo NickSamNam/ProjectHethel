@@ -15,6 +15,8 @@ public:
 	StopChargingVehicle(std::shared_ptr<Vehicle::VehicleClient> vehicle);
 
 	void execute();
+
+	void parseParams(std::map<String, String> params);
 };
 }
 
