@@ -8,6 +8,9 @@
 #include "Notifying/Notifier.h"
 #include "Notifying/RgbLed.h"
 #include "Messaging/JsonHandler.h"
+#include "Messaging/Commands/ChargeVehicle.h"
+#include "Messaging/Commands/ReverseChargeVehicle.h"
+#include "Messaging/Commands/StopChargingVehicle.h"
 
 using namespace Vehicle;
 using namespace Networking;
@@ -21,6 +24,9 @@ using namespace Messaging;
 #define MAX_CHARGING_CURRENT 6
 #define MAX_REVERSE_CHARGING_CURRENT 6
 #define VEHICLE_TIMEOUT_THRESHOLD 3000
+#define COMMAND_CHARGE_NAME "charge"
+#define COMMAND_REVERSE_CHARGE_NAME "reverse charge"
+#define COMMAND_STOP_CHARGING_NAME "stop charge"
 
 #define GPS_SERIAL &Serial1
 
@@ -52,6 +58,10 @@ void setup()
 		LED_PIN_RED, LED_PIN_BLUE, LED_PIN_GREEN)));
 
 	messageHandler = std::make_shared<JsonHandler>();
+
+	messageHandler->addCommand(COMMAND_CHARGE_NAME, std::make_shared<ChargeVehicle>(vehicle));
+	messageHandler->addCommand(COMMAND_REVERSE_CHARGE_NAME, std::make_shared<ReverseChargeVehicle>(vehicle));
+	messageHandler->addCommand(COMMAND_STOP_CHARGING_NAME, std::make_shared<StopChargingVehicle>(vehicle));
 }
 
 void loop()
@@ -67,10 +77,15 @@ void loop()
 		notifier->setVmsError();
 	}
 	Location locationData = location->getLocation();
-	String message = messageHandler->generateMessage(vehicleData, locationData);
+	String messageOut = messageHandler->generateMessage(vehicleData, locationData);
 	
 	if (VehicleData::isValid(vehicleData.timestamp) || locationData.isValid(locationData.timestamp))
 	{
-		Serial.println(message);
+		Serial.println(messageOut);
+	}
+
+	if (Serial.available())
+	{
+		messageHandler->parseMessage(Serial.readStringUntil('\r'))->execute();
 	}
 }

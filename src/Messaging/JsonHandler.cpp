@@ -1,5 +1,4 @@
 #include <ArduinoJson.h>
-#include <string>
 
 #include "Messaging/JsonHandler.h"
 #include "Vehicle/VehicleData.h"
