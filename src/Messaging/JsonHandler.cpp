@@ -12,6 +12,7 @@
 #define GENERATE_JSON_ARRAY_ELEMENTS = 29
 #define GENERATE_JSON_DATA_OBJECT_ELEMENTS = 2
 #define GENERATE_JSON_SENSORS_OBJECT_ELEMENTS = 1
+#define GENERATE_JSON_MARGIN = 1000
 
 #define PARSE_JSON_COMMAND_OBJECT_SIZE = 1
 #define PARSE_JSON_PARAMS_OBJECT_SIZE = 2
@@ -49,8 +50,9 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	const unsigned int arrayElements GENERATE_JSON_ARRAY_ELEMENTS;
 	const unsigned int dataObjectElements GENERATE_JSON_DATA_OBJECT_ELEMENTS;
 	const unsigned int sensorsObjectElements GENERATE_JSON_SENSORS_OBJECT_ELEMENTS;
+	const unsigned int margin GENERATE_JSON_MARGIN;
 
-	const size_t capacity = JSON_ARRAY_SIZE(arrayElements) + arrayElements*JSON_OBJECT_SIZE(sensorsObjectElements) + arrayElements*JSON_OBJECT_SIZE(dataObjectElements) + JSON_OBJECT_SIZE(looseObjects) + JSON_OBJECT_SIZE(dataObjectElements);
+	const size_t capacity = JSON_ARRAY_SIZE(arrayElements) + arrayElements*JSON_OBJECT_SIZE(sensorsObjectElements) + arrayElements*JSON_OBJECT_SIZE(dataObjectElements) + JSON_OBJECT_SIZE(looseObjects) + JSON_OBJECT_SIZE(dataObjectElements) + margin;
 	DynamicJsonDocument doc(capacity);
 
 	doc["version-api"] = VERSION_API;
@@ -149,7 +151,7 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 
 	JsonObject data_error = data.createNestedObject("error");
 	data_error["value"] = vehicleData.error;
-	data_error["unit"] = Vehicle::VehicleData::Units::error_codes;
+	data_error["unit"] = Vehicle::VehicleData::units.error_codes;
 
 	JsonObject data_longitude = data.createNestedObject("longitude");
 	data_longitude["value"] = concatenateCardinalDirection(locationData.longitude, locationData.directionLong);
