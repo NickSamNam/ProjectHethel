@@ -33,6 +33,7 @@ String reformatLocationTimeStamp(long timestamp){
 	std::string str = oss.str();
 
 	int size = str.size();
+	size--;
 
 	for( int i=0; i < size; i++){
 		if(i==0){
@@ -55,6 +56,12 @@ String reformatLocationTimeStamp(long timestamp){
 		}
 	}
 	sprintf(buffer, "0000-00-00T%c%c:%c%c:%c%c+00:00", h1, h2, m1, m2, s1, s2);
+	return buffer;
+}
+
+String concatenateCardinalDirection(long coordinates, char direction){
+	char buffer[25];
+	sprintf(buffer, "%lu %c", coordinates, direction);
 	return buffer;
 }
 
@@ -167,20 +174,12 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	data_error["unit"] = Vehicle::VehicleData::units.error_codes;
 
 	JsonObject data_longitude = data.createNestedObject("longitude");
-	data_longitude["value"] = locationData.longitude;
-	data_longitude["unit"] = Positioning::Location::units.DDDmm_mmmm;
-
-	JsonObject data_direction_long = data.createNestedObject("direction_long");
-	data_direction_long["value"] = locationData.directionLong;
-	data_direction_long["unit"] = Positioning::Location::units.cardinalDirection;
+	data_longitude["value"] = concatenateCardinalDirection(locationData.longitude, locationData.directionLong);
+	data_longitude["unit"] = Positioning::Location::units.DDDmm_mmmm_C;
 
 	JsonObject data_latitude = data.createNestedObject("latitude");
-	data_latitude["value"] = locationData.latitude;
-	data_latitude["unit"] = Positioning::Location::units.DDmm_mmmm;
-
-	JsonObject data_direction_lat = data.createNestedObject("direction_lat");
-	data_direction_lat["value"] = locationData.directionLat;
-	data_direction_lat["unit"] = Positioning::Location::units.cardinalDirection;
+	data_latitude["value"] = concatenateCardinalDirection(locationData.latitude, locationData.directionLat);
+	data_latitude["unit"] = Positioning::Location::units.DDmm_mmmm_C;
 
 	JsonObject data_altitude = data.createNestedObject("altitude");
 	data_altitude["value"] = locationData.altitude;

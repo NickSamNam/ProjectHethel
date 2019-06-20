@@ -15,9 +15,8 @@ public:
 	long timestamp; // format hhmmss
 
 	static const struct Units {
-		const char* DDDmm_mmmm = "DDDmm.mmmm"; //D degrees, m minutes.
-		const char* DDmm_mmmm = "DDmm.mmmm"; //D degrees, m minutes.
-		const char* cardinalDirection = "NSEW"; //North, South, East or West.
+		const char* DDDmm_mmmm_C = "DDDmm.mmmm_C"; //D degrees, m minutes, C for cardinal direction N or S.
+		const char* DDmm_mmmm_C = "DDmm.mmmm_C"; //D degrees, m minutes, C for cardinal direction E or W.
 		const char* meters = "m";
 	} units;
 
