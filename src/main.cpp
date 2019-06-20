@@ -32,7 +32,7 @@ std::shared_ptr<VehicleClient> vehicle;
 std::shared_ptr<NetworkClient> network;
 std::shared_ptr<LocationProvider> location;
 std::shared_ptr<Notifier> notifier;
-std::shared_ptr<JsonHandler> messageHandler;
+std::shared_ptr<MessageHandler> messageHandler;
 
 uint32_t prevVehicleMillis = 0;
 
@@ -51,6 +51,8 @@ void setup()
 
 	notifier = std::make_shared<Notifier>(std::move(std::make_unique<RgbLed>(
 		LED_PIN_RED, LED_PIN_BLUE, LED_PIN_GREEN)));
+
+	messageHandler = std::make_shared<JsonHandler>();
 }
 
 void loop()
