@@ -6,7 +6,7 @@
 
 namespace Messaging
 {
-class ChargeVehicle : Command
+class ChargeVehicle : public Command
 {
 private:
 	std::shared_ptr<Vehicle::VehicleClient> vehicle;
