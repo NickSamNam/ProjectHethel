@@ -5,7 +5,6 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <map>
-#include <string>
 #include <set>
 
 namespace Networking

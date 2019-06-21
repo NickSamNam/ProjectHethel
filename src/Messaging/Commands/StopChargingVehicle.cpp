@@ -9,5 +9,7 @@ StopChargingVehicle::StopChargingVehicle(std::shared_ptr<Vehicle::VehicleClient>
 
 void StopChargingVehicle::execute()
 {
-	// TODO - implement StopChargingVehicle::execute
+	this->vehicle->stopCharging();
 }
+
+void StopChargingVehicle::parseParams(std::map<String, String> params){}

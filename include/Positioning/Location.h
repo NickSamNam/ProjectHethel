@@ -5,7 +5,6 @@ namespace Positioning
 {
 struct Location
 {
-
 public:
 	Location();
 	long longitude; // DDDmm.mmmm degrees and minutes
@@ -15,7 +14,14 @@ public:
 	long altitude; // in meters
 	long timestamp; // format hhmmss
 
-	bool isValid();
+	static const struct Units {
+		static const char* DDDmm_mmmm_C; //D degrees, m minutes, C for cardinal direction N or S.
+		static const char* DDmm_mmmm_C; //D degrees, m minutes, C for cardinal direction E or W.
+		static const char* meters;
+	} units;
+
+	static bool isValid(long value);
+	static bool isValid(char value);
 };
 }
 #endif

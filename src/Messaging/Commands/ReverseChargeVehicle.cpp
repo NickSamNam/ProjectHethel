@@ -9,10 +9,10 @@ ReverseChargeVehicle::ReverseChargeVehicle(std::shared_ptr<Vehicle::VehicleClien
 
 void ReverseChargeVehicle::execute()
 {
-	// TODO - implement ReverseChargeVehicle::execute
+	vehicle->startReverseCharging(this->current);
 }
 
-void ReverseChargeVehicle::parseParams(std::string params)
+void ReverseChargeVehicle::parseParams(std::map<String, String> params)
 {
-	// TODO - implement ReverseChargeVehicle::parseParams
+	current = params["current"].toInt();	
 }

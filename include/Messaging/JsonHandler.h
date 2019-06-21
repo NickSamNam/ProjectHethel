@@ -1,21 +1,22 @@
 #ifndef JSONHANDLER_H
 #define JSONHANDLER_H
 
-#include <string>
+#include <String.h>
+#include <memory>
+
 #include "MessageHandler.h"
 #include "Vehicle/VehicleData.h"
 #include "Positioning/Location.h"
-#include "Messaging/Commands/Command.h"
-#include <memory>
+#include "./Commands/Command.h"
 
 namespace Messaging
 {
-class JsonHandler : MessageHandler
+class JsonHandler : public MessageHandler
 {
 public:
-	std::string generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData);
+	String generateMessage(Vehicle::VehicleData vehicleData, Positioning::Location locationData);
 
-	std::shared_ptr<Command> parseMessage(std::string message);
+	std::shared_ptr<Command> parseMessage(String message);
 };
 }
 
