@@ -127,7 +127,7 @@ String JsonHandler::generateMessage(Vehicle::VehicleData vehicleData, Positionin
 	data_i_line3["unit"] = Vehicle::VehicleData::Units::ampere;
 
 	JsonObject data_p_line = data.createNestedObject("p_line");
-	data_p_line["value"] = "number";
+	data_p_line["value"] = vehicleData.p_line;
 	data_p_line["unit"] = Vehicle::VehicleData::Units::kilo_watt;
 
 	JsonObject data_v_aps = data.createNestedObject("v_aps");
