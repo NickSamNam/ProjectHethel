@@ -4,7 +4,7 @@ Enexis Lotus Elise Energy Management Module
 ## Software Design
 ![Alt text](./docs/Class&#32;Diagram.svg "Class Diagram")
 
-## Devoloped by
+## Developed by
 [Thomas Brouwers](https://github.com/Thomas-Brouwers "GitHub"): Positioning
 
 [Tristen Krijgsman](https://github.com/TristenKrijgsman "GitHub"): Messaging, Notifying
